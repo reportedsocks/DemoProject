@@ -50,6 +50,7 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
     }
 
     fun refresh() {
+        Log.d("MyLogs", "refresh called")
         _forceUpdate.value = true
     }
 }
