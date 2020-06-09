@@ -17,6 +17,7 @@ sealed class Result<out R> {
         }
     }
 
+
 }
 
 val Result<*>.succeeded

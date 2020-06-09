@@ -1,24 +1,30 @@
 package com.reportedsocks.demoproject.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.R
+import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-/**
- * A simple [Fragment] subclass.
- */
 class MainFragment : Fragment() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (requireActivity().applicationContext as MyApp).appComponent.inject(this)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -31,7 +37,11 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        requireActivity().toolbar.title = "Demo Project"
+        requireActivity().toolbar.title = resources.getString(R.string.app_name)
+        viewModel.items.observe(viewLifecycleOwner, Observer { response ->
+            Log.d("MyLogs", "new value in fragment: $response")
+            Toast.makeText(activity, "got data: $response", Toast.LENGTH_LONG).show()
+        })
 
     }
 

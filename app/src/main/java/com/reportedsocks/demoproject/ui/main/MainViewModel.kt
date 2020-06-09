@@ -10,10 +10,6 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel() {
 
-    init {
-        loadUsers(true)
-    }
-
     private val _forceUpdate = MutableLiveData<Boolean>(false)
 
     private val _items: LiveData<List<User>> = _forceUpdate.switchMap { forceUpdate ->
@@ -26,20 +22,25 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
         }
         dataRepository.observeUsers().switchMap { checkResults(it) }
     }
-    private val items: LiveData<List<User>> = _items
+    val items: LiveData<List<User>> = _items
 
     private val _dataLoading = MutableLiveData<Boolean>()
-    private val dataLoading: LiveData<Boolean> = _dataLoading
+    val dataLoading: LiveData<Boolean> = _dataLoading
+
+    init {
+        loadUsers(true)
+    }
 
     private fun checkResults(usersResults: Result<List<User>>): LiveData<List<User>> {
         val result = MutableLiveData<List<User>>()
         if (usersResults is Result.Success) {
             result.value = usersResults.data
-            Log.d("MyLogs", "results: ${usersResults.data}")
+            Log.d("MyLogs", "results in vm: ${usersResults.data}")
             // TODO set error to false
         } else {
             result.value = emptyList()
             // TODO show error
+            Log.d("MyLogs", "error in vm")
         }
         return result
     }

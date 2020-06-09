@@ -1,7 +1,6 @@
 package com.reportedsocks.demoproject.data.source.local
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
+import android.util.Log
 import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
@@ -11,17 +10,23 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class LocalDataSource @Inject constructor(
-    private val usersDao: UsersDao,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val usersDao: UsersDao
 ) : DataSource {
 
-    override fun observeUsers(): LiveData<Result<List<User>>> {
+    constructor(usersDao: UsersDao, dispatcher: CoroutineDispatcher) : this(usersDao) {
+        this.dispatcher = dispatcher
+    }
+
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    /*override fun observeUsers(): LiveData<Result<List<User>>> {
         return usersDao.observeUsers().map {
             Result.Success(it)
         }
-    }
+    }*/
 
     override suspend fun getUsers(): Result<List<User>> {
+        Log.d("MyLogs", "Trying load users from localDataSource")
         return withContext(dispatcher) {
             try {
                 Result.Success(usersDao.getUsers())
@@ -35,9 +40,9 @@ class LocalDataSource @Inject constructor(
         return getUsers()
     }
 
-    override suspend fun refreshUsers() {
+    /*override suspend fun refreshUsers() {
         // not needed
-    }
+    }*/
 
     override suspend fun deleteUsers() {
         withContext(dispatcher) {
