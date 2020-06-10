@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.reportedsocks.demoproject.data.User" />
+
+        <variable
+            name="viewmodel"
+            type="com.reportedsocks.demoproject.ui.main.MainViewModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/user_item_horizontal_margin"
+        android:layout_marginVertical="@dimen/user_item_vertical_margin"
+        app:cardCornerRadius="@dimen/user_item_corner_radius">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/user_item_padding"
+            android:paddingTop="@dimen/user_item_padding"
+            android:paddingEnd="@dimen/user_item_padding"
+            android:paddingBottom="@dimen/user_item_padding">
+
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginEnd="82dp"
+                app:avatar="@{user.avatarUrl}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:src="@drawable/ic_baseline_account_box_24" />
+
+            <TextView
+                android:id="@+id/user_login"
+                style="@style/TextAppearance.AppCompat.Large"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{user.login}"
+                app:layout_constraintBottom_toTopOf="@id/user_type"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_avatar"
+                app:layout_constraintTop_toTopOf="@+id/user_avatar"
+                app:layout_constraintVertical_chainStyle="spread"
+                tools:text="Username" />
+
+            <TextView
+                android:id="@+id/user_type"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_type(user.type)}"
+                app:layout_constraintBottom_toBottomOf="@id/user_avatar"
+                app:layout_constraintEnd_toStartOf="@id/user_id"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toEndOf="@id/user_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/user_login"
+                tools:text="Type" />
+
+            <TextView
+                android:id="@+id/user_id"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/user_id(user.id)}"
+                app:layout_constraintBottom_toBottomOf="@id/user_avatar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/user_type"
+                app:layout_constraintTop_toBottomOf="@id/user_login"
+                tools:text="ID" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

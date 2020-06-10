@@ -26,11 +26,13 @@
             app:onRefreshListener="@{viewmodel::refresh}"
             app:refreshing="@{viewmodel.dataLoading}">
 
-            <TextView
-                android:id="@+id/text"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/users_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/hello_blank_fragment" />
+                android:layout_height="wrap_content"
+                app:items="@{viewmodel.items}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
         </com.reportedsocks.demoproject.ui.util.ScrollChildSwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

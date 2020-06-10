@@ -1,11 +1,9 @@
 package com.reportedsocks.demoproject.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +21,7 @@ class MainFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelFactory
     private lateinit var viewModel: MainViewModel
     private lateinit var viewDataBinding: FragmentMainBinding
+    private lateinit var listAdapter: UsersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +44,19 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         requireActivity().toolbar.title = resources.getString(R.string.app_name)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
-        setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.text)
+        setupListAdapter()
+        setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.usersList)
+
 
         viewModel.items.observe(viewLifecycleOwner, Observer { response ->
-            Log.d("MyLogs", "new value in fragment: $response")
-            Toast.makeText(activity, "got data: $response", Toast.LENGTH_LONG).show()
+            //Log.d("MyLogs", "new value in fragment: $response")
         })
 
+    }
+
+    private fun setupListAdapter() {
+        listAdapter = UsersAdapter(viewModel)
+        viewDataBinding.usersList.adapter = listAdapter
     }
 
 }

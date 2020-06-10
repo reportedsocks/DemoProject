@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="user_item_padding">8dp</dimen>
+    <dimen name="user_item_horizontal_margin">16dp</dimen>
+    <dimen name="user_item_vertical_margin">@dimen/user_item_padding</dimen>
+    <dimen name="user_item_corner_radius">4dp</dimen>
+</resources>
