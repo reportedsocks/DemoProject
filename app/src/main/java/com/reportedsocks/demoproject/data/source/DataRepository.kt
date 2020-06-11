@@ -40,6 +40,9 @@ class DataRepository @Inject constructor(
     }
 
     fun observeUsers(): LiveData<Result<List<User>>> {
+        // check error handling
+        /*val test = MutableLiveData<Result<List<User>>>()
+        test.value = Result.Error(java.lang.Exception())*/
         return observableUsers
     }
 

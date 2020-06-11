@@ -1,10 +1,16 @@
 package com.reportedsocks.demoproject.ui.main
 
 import android.util.Log
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.lifecycle.*
+import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
+import com.reportedsocks.demoproject.ui.util.Event
+import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
+import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,6 +19,7 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
     private val _forceUpdate = MutableLiveData<Boolean>(false)
 
     private val _items: LiveData<List<User>> = _forceUpdate.switchMap { forceUpdate ->
+        Log.d("MyLogs", "vm updating values, force: $forceUpdate")
         if (forceUpdate) {
             _dataLoading.value = true
             viewModelScope.launch {
@@ -20,29 +27,104 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
                 _dataLoading.value = false
             }
         }
-        dataRepository.observeUsers().switchMap { checkResults(it) }
+        dataRepository.observeUsers().switchMap { filterResults(it) }
     }
     val items: LiveData<List<User>> = _items
 
     private val _dataLoading = MutableLiveData<Boolean>()
     val dataLoading: LiveData<Boolean> = _dataLoading
 
+    private var currentFiltering = UsersFilterType.ALL
+
+    private val _snackbarText = MutableLiveData<Event<Int>>()
+    val snackbarText: LiveData<Event<Int>> = _snackbarText
+
+    private val _currentFilteringLabel = MutableLiveData<Int>()
+    val currentFilteringLabel: LiveData<Int> = _currentFilteringLabel
+
+    private val _noItemsFilteringLabel = MutableLiveData<Int>()
+    val noItemsFilteringLabel: LiveData<Int> = _noItemsFilteringLabel
+
+    private val _noItemsIconRes = MutableLiveData<Int>()
+    val noItemsIconRes: LiveData<Int> = _noItemsIconRes
+
+    val empty: LiveData<Boolean> = Transformations.map(items) {
+        it.isEmpty()
+    }
+
     init {
+        setFiltering(currentFiltering)
         loadUsers(true)
     }
 
-    private fun checkResults(usersResults: Result<List<User>>): LiveData<List<User>> {
+    fun setFiltering(filterType: UsersFilterType) {
+        currentFiltering = filterType
+        when (filterType) {
+            UsersFilterType.ALL -> {
+                setFilter(
+                    R.string.label_all,
+                    R.string.no_items_all,
+                    R.drawable.ic_baseline_not_interested_24
+                )
+            }
+            UsersFilterType.USER -> {
+                setFilter(
+                    R.string.label_users,
+                    R.string.no_items_users,
+                    R.drawable.ic_baseline_person_outline_24
+                )
+            }
+            UsersFilterType.ORGANISATION -> {
+                setFilter(
+                    R.string.label_organisations,
+                    R.string.no_items_organisations,
+                    R.drawable.ic_baseline_people_outline_24
+                )
+            }
+        }
+        loadUsers(false)
+    }
+
+    private fun setFilter(
+        @StringRes filteringLabelString: Int, @StringRes noItemsLabelString: Int,
+        @DrawableRes noItemsIconDrawable: Int
+    ) {
+        _currentFilteringLabel.value = filteringLabelString
+        _noItemsFilteringLabel.value = noItemsLabelString
+        _noItemsIconRes.value = noItemsIconDrawable
+    }
+
+    private fun filterResults(usersResults: Result<List<User>>): LiveData<List<User>> {
         val result = MutableLiveData<List<User>>()
         if (usersResults is Result.Success) {
-            result.value = usersResults.data
-            Log.d("MyLogs", "results in vm: ${usersResults.data}")
-            // TODO set error to false
+            viewModelScope.launch {
+                result.value = filterItems(usersResults.data, currentFiltering)
+            }
         } else {
             result.value = emptyList()
-            // TODO show error
-            Log.d("MyLogs", "error in vm")
+            showSnackbarMessage(R.string.error_loading_items)
         }
         return result
+    }
+
+    private fun filterItems(users: List<User>, filterType: UsersFilterType): List<User> {
+        val usersToShow = ArrayList<User>()
+        for (user in users) {
+            when (filterType) {
+                UsersFilterType.ALL -> usersToShow.add(user)
+                UsersFilterType.USER -> if (user.type == ITEM_TYPE_USER) {
+                    usersToShow.add(user)
+                }
+                UsersFilterType.ORGANISATION -> if (user.type == ITEM_TYPE_ORGANISATION) {
+                    usersToShow.add(user)
+                }
+            }
+        }
+        return usersToShow
+    }
+
+    private fun showSnackbarMessage(message: Int) {
+        _snackbarText.value = Event(message)
     }
 
     fun loadUsers(forceUpdate: Boolean) {
@@ -50,7 +132,6 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
     }
 
     fun refresh() {
-        Log.d("MyLogs", "refresh called")
         _forceUpdate.value = true
     }
 }

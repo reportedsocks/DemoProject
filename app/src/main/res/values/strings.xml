@@ -2,4 +2,15 @@
     <string name="app_name">Demo Project</string>
     <string name="user_type">Type: %s</string>
     <string name="user_id">Id: %s</string>
+    <string name="menu_filter">Filter</string>
+    <string name="user">User</string>
+    <string name="organisation">Organisation</string>
+    <string name="all">All</string>
+    <string name="label_all">All types</string>
+    <string name="label_users">Users</string>
+    <string name="label_organisations">Organisations</string>
+    <string name="no_items_all">No items found!</string>
+    <string name="no_items_users">No users found!</string>
+    <string name="no_items_organisations">No organisations found!</string>
+    <string name="error_loading_items">Couldn\'t load items!</string>
 </resources>

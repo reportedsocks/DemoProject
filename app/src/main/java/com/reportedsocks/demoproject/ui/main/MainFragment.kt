@@ -1,17 +1,17 @@
 package com.reportedsocks.demoproject.ui.main
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.snackbar.Snackbar
 import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.databinding.FragmentMainBinding
 import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
 import com.reportedsocks.demoproject.ui.util.setupRefreshLayout
+import com.reportedsocks.demoproject.ui.util.setupSnackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
@@ -37,26 +37,61 @@ class MainFragment : Fragment() {
         viewDataBinding = FragmentMainBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
+        setHasOptionsMenu(true)
         return viewDataBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         requireActivity().toolbar.title = resources.getString(R.string.app_name)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         setupListAdapter()
+        setupSnackbar()
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.usersList)
 
+    }
 
-        viewModel.items.observe(viewLifecycleOwner, Observer { response ->
-            //Log.d("MyLogs", "new value in fragment: $response")
-        })
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_filter -> {
+                showFilteringPopupMenu()
+                true
+            }
+            else -> false
+        }
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main_fragment_menu, menu)
+    }
+
+    private fun showFilteringPopupMenu() {
+        val view: View = requireActivity().findViewById<View>(R.id.menu_filter)
+        PopupMenu(requireContext(), view).run {
+            menuInflater.inflate(R.menu.filter_users, menu)
+
+            setOnMenuItemClickListener {
+                viewModel.setFiltering(
+                    when (it.itemId) {
+                        R.id.user -> UsersFilterType.USER
+                        R.id.organisation -> UsersFilterType.ORGANISATION
+                        else -> UsersFilterType.ALL
+                    }
+                )
+                true
+            }
+            show()
+        }
     }
 
     private fun setupListAdapter() {
         listAdapter = UsersAdapter(viewModel)
         viewDataBinding.usersList.adapter = listAdapter
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(viewLifecycleOwner, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
     }
 
 }
