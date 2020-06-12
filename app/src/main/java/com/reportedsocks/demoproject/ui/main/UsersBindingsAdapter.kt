@@ -2,19 +2,20 @@ package com.reportedsocks.demoproject.ui.main
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.User
 
-@BindingAdapter("app:items")
-fun setItems(listView: RecyclerView, users: List<User>?) {
+@BindingAdapter("items")
+fun setItems(listView: RecyclerView, users: PagedList<User>?) {
     users?.let {
         (listView.adapter as UsersAdapter).submitList(users)
     }
 }
 
-@BindingAdapter("app:avatar")
+@BindingAdapter("avatar")
 fun setAvatar(imageView: ImageView, url: String?) {
     Glide
         .with(imageView)

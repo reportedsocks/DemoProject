@@ -2,8 +2,8 @@ package com.reportedsocks.demoproject.data
 
 interface DataSource {
     //fun observeUsers(): LiveData<Result<List<User>>>
-    suspend fun getUsers(): Result<List<User>>
-    suspend fun getUsersFromId(id: Int): Result<List<User>>
+    suspend fun getUsers(id: Int): Result<List<User>>
+    //suspend fun getUsersFromId(id: Int): Result<List<User>>
 
     //suspend fun refreshUsers()
     suspend fun deleteUsers()

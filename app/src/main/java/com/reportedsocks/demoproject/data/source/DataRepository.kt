@@ -7,8 +7,9 @@ import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.local.LocalDataSource
 import com.reportedsocks.demoproject.data.source.remote.RemoteDataSource
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import com.reportedsocks.demoproject.ui.main.UsersFilterType
+import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
+import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
 import javax.inject.Inject
 
 class DataRepository @Inject constructor(
@@ -16,54 +17,66 @@ class DataRepository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
 
-    constructor(
-        remoteDataSource: RemoteDataSource,
-        localDataSource: LocalDataSource,
-        dispatcher: CoroutineDispatcher
-    ) : this(remoteDataSource, localDataSource) {
-        this.dispatcher = dispatcher
+    private val _dataLoading = MutableLiveData<Boolean>()
+    val dataLoading: LiveData<Boolean> = _dataLoading
+
+    private val _isEmpty = MutableLiveData<Boolean>()
+    val isEmpty: LiveData<Boolean> = _isEmpty
+
+    var currentFiltering = UsersFilterType.ALL
+
+    suspend fun loadAndSaveUsers(id: Int): List<User> {
+        updateUsersFromRemoteDataSource(id)
+        return getUsersFromLocalDataSource(id)
     }
 
-    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
-    private val observableUsers = MutableLiveData<Result<List<User>>>()
-
-    //TODO refactor to UpdateUsersFromLocalDataSource()
-    suspend fun getUsers(forceUpdate: Boolean): Result<List<User>> {
-        if (forceUpdate) {
-            try {
-                updateUsersFromRemoteDataSource()
-            } catch (e: Exception) {
-                return Result.Error(e)
-            }
-        }
-        return localDataSource.getUsers()
-    }
-
-    fun observeUsers(): LiveData<Result<List<User>>> {
-        // check error handling
-        /*val test = MutableLiveData<Result<List<User>>>()
-        test.value = Result.Error(java.lang.Exception())*/
-        return observableUsers
-    }
-
-    suspend fun refreshUsers() {
-        updateUsersFromRemoteDataSource()
-    }
-
-    private suspend fun updateUsersFromRemoteDataSource() {
-        val remoteUsers = remoteDataSource.getUsers()
-        Log.d("MyLogs", "response in dataRepository from remote: $remoteUsers")
-        if (remoteUsers is Result.Success) {
-            observableUsers.postValue(remoteUsers)
-            localDataSource.deleteUsers()
-            remoteUsers.data.forEach { user ->
+    private suspend fun updateUsersFromRemoteDataSource(id: Int) {
+        _dataLoading.postValue(true)
+        val result = remoteDataSource.getUsers(id)
+        if (result is Result.Success) {
+            Log.d("MyLogs", "DataRepository remote result: ${result.data}")
+            for (user in result.data) {
                 localDataSource.saveUser(user)
             }
-        } else if (remoteUsers is Result.Error) {
-            Log.d("MyLogs", "error in dataRepository when loading from remote, switching to local")
-            observableUsers.postValue(getUsers(false))
+        } else if (result is Result.Error){
+            Log.d("MyLogs", "DataRepository error loading remote data ${result.exception}")
+            //TODO handle error
+            
+            // java.lang.Exception: rate limit exceeded
         }
     }
 
+    private suspend fun getUsersFromLocalDataSource(id: Int): List<User> {
+        val result = localDataSource.getUsers(id)
 
+        return if (result is Result.Success) {
+            Log.d("MyLogs", "DataRepository local result: ${result.data}")
+
+            _dataLoading.postValue(false)
+            val filtered = filterItems(result.data)
+            _isEmpty.value = filtered.isEmpty()
+            filtered
+        } else {
+            Log.d("MyLogs", "DataRepository error loading local data")
+            _dataLoading.postValue(false)
+            emptyList()
+            //TODO handle error
+        }
+    }
+
+    private fun filterItems(users: List<User>): List<User> {
+        val usersToShow = ArrayList<User>()
+        for (user in users) {
+            when (currentFiltering) {
+                UsersFilterType.ALL -> usersToShow.add(user)
+                UsersFilterType.USER -> if (user.type == ITEM_TYPE_USER) {
+                    usersToShow.add(user)
+                }
+                UsersFilterType.ORGANISATION -> if (user.type == ITEM_TYPE_ORGANISATION) {
+                    usersToShow.add(user)
+                }
+            }
+        }
+        return usersToShow
+    }
 }

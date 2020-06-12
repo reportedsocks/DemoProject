@@ -1,40 +1,44 @@
 package com.reportedsocks.demoproject.ui.main
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
+import androidx.paging.DataSource
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.reportedsocks.demoproject.R
-import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
+import com.reportedsocks.demoproject.data.source.PagedDataSource
+import com.reportedsocks.demoproject.data.source.UserBoundaryCallback
 import com.reportedsocks.demoproject.ui.util.Event
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MainViewModel @Inject constructor(private val dataRepository: DataRepository) : ViewModel() {
+class MainViewModel @Inject constructor(
+    private val dataRepository: DataRepository
+) : ViewModel() {
 
-    private val _forceUpdate = MutableLiveData<Boolean>(false)
 
-    private val _items: LiveData<List<User>> = _forceUpdate.switchMap { forceUpdate ->
+    /*private val _items: LiveData<List<User>> = _forceUpdate.switchMap { forceUpdate ->
         Log.d("MyLogs", "vm updating values, force: $forceUpdate")
         if (forceUpdate) {
             _dataLoading.value = true
             viewModelScope.launch {
-                dataRepository.refreshUsers()
+                //dataRepository.refreshUsers()
                 _dataLoading.value = false
             }
         }
         dataRepository.observeUsers().switchMap { filterResults(it) }
-    }
-    val items: LiveData<List<User>> = _items
+    }*/
+    //val items: LiveData<List<User>> = _items
 
-    private val _dataLoading = MutableLiveData<Boolean>()
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    var pagedItems: LiveData<PagedList<User>>
+        private set
 
     private var currentFiltering = UsersFilterType.ALL
+
+    //private val _dataLoading = dataRepository.dataLoading
+    val dataLoading: LiveData<Boolean> = dataRepository.dataLoading
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -48,17 +52,26 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
     private val _noItemsIconRes = MutableLiveData<Int>()
     val noItemsIconRes: LiveData<Int> = _noItemsIconRes
 
-    val empty: LiveData<Boolean> = Transformations.map(items) {
-        it.isEmpty()
+    init {
+        val config = PagedList.Config.Builder()
+            .setPageSize(30)
+            .setEnablePlaceholders(true)
+            .build()
+
+        pagedItems = initializePagedListBuilder(config)
+            .setBoundaryCallback(UserBoundaryCallback(dataRepository, viewModelScope))
+            .setInitialLoadKey(0)
+            .build()
+        setFiltering(currentFiltering)
     }
 
-    init {
-        setFiltering(currentFiltering)
-        loadUsers(true)
+    val empty: LiveData<Boolean> = dataRepository.isEmpty.map { lastPageEmpty ->
+        lastPageEmpty && pagedItems.value?.isEmpty() == true
     }
 
     fun setFiltering(filterType: UsersFilterType) {
         currentFiltering = filterType
+        dataRepository.currentFiltering = filterType
         when (filterType) {
             UsersFilterType.ALL -> {
                 setFilter(
@@ -82,7 +95,7 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
                 )
             }
         }
-        loadUsers(false)
+        pagedItems.value?.dataSource?.invalidate()
     }
 
     private fun setFilter(
@@ -94,7 +107,7 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
         _noItemsIconRes.value = noItemsIconDrawable
     }
 
-    private fun filterResults(usersResults: Result<List<User>>): LiveData<List<User>> {
+    /*private fun filterResults(usersResults: Result<List<User>>): LiveData<List<User>> {
         val result = MutableLiveData<List<User>>()
         if (usersResults is Result.Success) {
             viewModelScope.launch {
@@ -121,17 +134,26 @@ class MainViewModel @Inject constructor(private val dataRepository: DataReposito
             }
         }
         return usersToShow
-    }
+    }*/
 
     private fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)
     }
 
-    fun loadUsers(forceUpdate: Boolean) {
-        _forceUpdate.value = forceUpdate
+    private fun initializePagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
+        val dataSourceFactory = object : DataSource.Factory<Int, User>() {
+            override fun create(): PagedDataSource {
+                return PagedDataSource(
+                    viewModelScope,
+                    dataRepository
+                )
+            }
+
+        }
+        return LivePagedListBuilder(dataSourceFactory, config)
     }
 
     fun refresh() {
-        _forceUpdate.value = true
+        pagedItems.value?.dataSource?.invalidate()
     }
 }

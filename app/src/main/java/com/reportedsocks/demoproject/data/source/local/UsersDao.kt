@@ -6,11 +6,8 @@ import com.reportedsocks.demoproject.data.User
 @Dao
 interface UsersDao {
 
-    /*@Query("SELECT * FROM users")
-    fun observeUsers(): LiveData<List<User>>*/
-
-    @Query("SELECT * FROM users")
-    suspend fun getUsers(): List<User>
+    @Query("SELECT * FROM users WHERE id > :id")
+    suspend fun getUsers(id: Int): List<User>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)

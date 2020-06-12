@@ -25,11 +25,11 @@ class RemoteDataSource @Inject constructor(
         return observableUsers
     }*/
 
-    override suspend fun getUsers(): Result<List<User>> {
+    override suspend fun getUsers(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from remoteDataSource")
         return withContext(dispatcher) {
             try {
-                val response = githubApi.getUsers()
+                val response = githubApi.getUsers(id)
                 if (response.isSuccessful && response.body() != null) {
                     val result = Result.Success(response.body()!!)
                     //observableUsers.postValue(result)
@@ -53,11 +53,11 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    override suspend fun getUsersFromId(id: Int): Result<List<User>> {
+    /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
         return withContext(dispatcher) {
             githubApi.getUsersFromId(id)
         }
-    }
+    }*/
 
     /*override suspend fun refreshUsers() { // TODO remove this
         observableUsers.value = getUsers()
@@ -70,5 +70,6 @@ class RemoteDataSource @Inject constructor(
     override suspend fun saveUser(user: User) {
         //not needed
     }
+
 
 }

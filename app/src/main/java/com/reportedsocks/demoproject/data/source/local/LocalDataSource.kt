@@ -25,20 +25,24 @@ class LocalDataSource @Inject constructor(
         }
     }*/
 
-    override suspend fun getUsers(): Result<List<User>> {
+    override suspend fun getUsers(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from localDataSource")
         return withContext(dispatcher) {
             try {
-                Result.Success(usersDao.getUsers())
+                Result.Success(usersDao.getUsers(id))
             } catch (e: Exception) {
                 Result.Error(e)
             }
         }
     }
 
-    override suspend fun getUsersFromId(id: Int): Result<List<User>> {
+    /*suspend fun getAllUsers(): androidx.paging.DataSource.Factory<Int, User>{
+        return usersDao.getAllUsers()
+    }*/
+
+    /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
         return getUsers()
-    }
+    }*/
 
     /*override suspend fun refreshUsers() {
         // not needed

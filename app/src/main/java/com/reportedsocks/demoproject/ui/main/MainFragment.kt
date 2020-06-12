@@ -50,6 +50,12 @@ class MainFragment : Fragment() {
         setupSnackbar()
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.usersList)
 
+/*        viewModel.pagedItems.observe(viewLifecycleOwner, Observer {
+            Log.d("MyLogs", "watching list from fragment: ${it.isEmpty()}; ${it.size}")
+        })
+        viewModel.empty.observe(viewLifecycleOwner, Observer {
+            Log.d("MyLogs", "watching list from fragment(empty): ${it}")
+        })*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
