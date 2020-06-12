@@ -59,7 +59,7 @@ class MainViewModel @Inject constructor(
             .build()
 
         pagedItems = initializePagedListBuilder(config)
-            .setBoundaryCallback(UserBoundaryCallback(dataRepository, viewModelScope))
+            .setBoundaryCallback(UserBoundaryCallback(dataRepository, this))
             .setInitialLoadKey(0)
             .build()
         setFiltering(currentFiltering)

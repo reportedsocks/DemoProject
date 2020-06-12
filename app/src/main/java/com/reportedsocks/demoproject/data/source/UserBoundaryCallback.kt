@@ -1,13 +1,15 @@
 package com.reportedsocks.demoproject.data.source
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.reportedsocks.demoproject.data.User
-import kotlinx.coroutines.CoroutineScope
+import com.reportedsocks.demoproject.ui.main.MainViewModel
+import kotlinx.coroutines.launch
 
 class UserBoundaryCallback(
     private val dataRepository: DataRepository,
-    private val scope: CoroutineScope
+    private val viewModel: MainViewModel
 ) : PagedList.BoundaryCallback<User>() {
     override fun onZeroItemsLoaded() {
         Log.d("MyLogs", "UserBoundaryCallback.onZeroItemsLoaded() called")
@@ -16,8 +18,16 @@ class UserBoundaryCallback(
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: User) {
-        Log.d("MyLogs", "UserBoundaryCallback.onItemAtEndLoaded() called")
-        //TODO try to load more items after it was called
-        //scope.launch { dataRepository.refreshUsers(itemAtEnd.id) }
+
+        viewModel.viewModelScope.launch {
+            Log.d(
+                "MyLogs",
+                "UserBoundaryCallback.onItemAtEndLoaded() called, lastId: ${dataRepository.lastLoadedItemId}"
+            )
+            val result = dataRepository.loadAndSaveUsers(dataRepository.lastLoadedItemId)
+            if (result.isNotEmpty()) {
+                viewModel.refresh()
+            }
+        }
     }
 }

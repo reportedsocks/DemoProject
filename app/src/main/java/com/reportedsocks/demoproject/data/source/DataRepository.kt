@@ -8,6 +8,7 @@ import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.local.LocalDataSource
 import com.reportedsocks.demoproject.data.source.remote.RemoteDataSource
 import com.reportedsocks.demoproject.ui.main.UsersFilterType
+import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
 import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
 import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
 import javax.inject.Inject
@@ -25,6 +26,8 @@ class DataRepository @Inject constructor(
 
     var currentFiltering = UsersFilterType.ALL
 
+    var lastLoadedItemId = INITIAL_KEY
+
     suspend fun loadAndSaveUsers(id: Int): List<User> {
         updateUsersFromRemoteDataSource(id)
         return getUsersFromLocalDataSource(id)
@@ -35,13 +38,18 @@ class DataRepository @Inject constructor(
         val result = remoteDataSource.getUsers(id)
         if (result is Result.Success) {
             Log.d("MyLogs", "DataRepository remote result: ${result.data}")
+
+            if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
+                lastLoadedItemId = result.data.last().id
+            }
+
             for (user in result.data) {
                 localDataSource.saveUser(user)
             }
-        } else if (result is Result.Error){
+        } else if (result is Result.Error) {
             Log.d("MyLogs", "DataRepository error loading remote data ${result.exception}")
             //TODO handle error
-            
+
             // java.lang.Exception: rate limit exceeded
         }
     }
@@ -51,6 +59,10 @@ class DataRepository @Inject constructor(
 
         return if (result is Result.Success) {
             Log.d("MyLogs", "DataRepository local result: ${result.data}")
+
+            if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
+                lastLoadedItemId = result.data.last().id
+            }
 
             _dataLoading.postValue(false)
             val filtered = filterItems(result.data)

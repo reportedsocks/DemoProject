@@ -29,4 +29,8 @@ data class User(
     override fun hashCode(): Int {
         return id
     }
+
+    override fun toString(): String {
+        return "User(id=$id, login=$login, type=$type)"
+    }
 }
