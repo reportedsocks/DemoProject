@@ -12,5 +12,6 @@
     <string name="no_items_all">No items found!</string>
     <string name="no_items_users">No users found!</string>
     <string name="no_items_organisations">No organisations found!</string>
+    <string name="error_updating_items">Couldn\'t update items!</string>
     <string name="error_loading_items">Couldn\'t load items!</string>
 </resources>

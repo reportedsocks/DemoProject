@@ -3,6 +3,7 @@ package com.reportedsocks.demoproject.data.source
 import android.util.Log
 import androidx.paging.ItemKeyedDataSource
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -22,7 +23,7 @@ class PagedDataSource(
             "PagedRemoteDataSource.loadInitial() with key ${params.requestedInitialKey} (always 0)"
         )
         scope.launch {
-            val result = dataRepository.loadAndSaveUsers(0)
+            val result = dataRepository.loadAndSaveUsers(INITIAL_KEY)
             callback.onResult(result)
         }
 

@@ -1,6 +1,7 @@
 package com.reportedsocks.demoproject.di.modules
 
 import com.reportedsocks.demoproject.data.source.remote.GithubApi
+import com.reportedsocks.demoproject.ui.util.GITHUB_API
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -25,7 +26,7 @@ class RetrofitModule {
         return Retrofit
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(GithubApi.server)
+            .baseUrl(GITHUB_API)
             .client(client)
             .build()
     }

@@ -4,7 +4,7 @@ sealed class Result<out R> {
 
     data class Success<out T>(val data: T) : com.reportedsocks.demoproject.data.Result<T>()
 
-    data class Error(val exception: Exception) :
+    data class Error(val exception: Exception, var isNetworkException: Boolean = true) :
         com.reportedsocks.demoproject.data.Result<Nothing>()
 
     object Loading : com.reportedsocks.demoproject.data.Result<Nothing>()

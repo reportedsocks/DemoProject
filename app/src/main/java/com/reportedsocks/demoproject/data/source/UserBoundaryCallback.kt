@@ -28,6 +28,13 @@ class UserBoundaryCallback(
             if (result.isNotEmpty()) {
                 viewModel.refresh()
             }
+            // This code would make app to keep loading until it has enough items of certain type,
+            // but github just doesn't provide enough of "organisation" type users so it will result
+            // in extremely long search which will be a bad UX. For now user can update page manually
+            // by swiping down for refresh, if he wants to find more items
+            /*else {
+                onItemAtEndLoaded(itemAtEnd)
+            }*/
         }
     }
 }

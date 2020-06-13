@@ -7,11 +7,14 @@ import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.reportedsocks.demoproject.R
+import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
 import com.reportedsocks.demoproject.data.source.PagedDataSource
 import com.reportedsocks.demoproject.data.source.UserBoundaryCallback
 import com.reportedsocks.demoproject.ui.util.Event
+import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
+import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -32,12 +35,13 @@ class MainViewModel @Inject constructor(
     }*/
     //val items: LiveData<List<User>> = _items
 
+    val loadingError = dataRepository.loadingError
+
     var pagedItems: LiveData<PagedList<User>>
         private set
 
     private var currentFiltering = UsersFilterType.ALL
 
-    //private val _dataLoading = dataRepository.dataLoading
     val dataLoading: LiveData<Boolean> = dataRepository.dataLoading
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
@@ -54,13 +58,13 @@ class MainViewModel @Inject constructor(
 
     init {
         val config = PagedList.Config.Builder()
-            .setPageSize(30)
+            .setPageSize(PAGE_SIZE)
             .setEnablePlaceholders(true)
             .build()
 
         pagedItems = initializePagedListBuilder(config)
             .setBoundaryCallback(UserBoundaryCallback(dataRepository, this))
-            .setInitialLoadKey(0)
+            .setInitialLoadKey(INITIAL_KEY)
             .build()
         setFiltering(currentFiltering)
     }
@@ -135,6 +139,16 @@ class MainViewModel @Inject constructor(
         }
         return usersToShow
     }*/
+
+    fun showError(error: Result.Error?) {
+        error?.let {
+            if (error.isNetworkException) {
+                showSnackbarMessage(R.string.error_updating_items)
+            } else {
+                showSnackbarMessage(R.string.error_loading_items)
+            }
+        }
+    }
 
     private fun showSnackbarMessage(message: Int) {
         _snackbarText.value = Event(message)

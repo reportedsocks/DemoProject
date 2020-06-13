@@ -31,7 +31,7 @@ class LocalDataSource @Inject constructor(
             try {
                 Result.Success(usersDao.getUsers(id))
             } catch (e: Exception) {
-                Result.Error(e)
+                Result.Error(e, false)
             }
         }
     }

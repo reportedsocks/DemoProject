@@ -42,13 +42,14 @@ class RemoteDataSource @Inject constructor(
                     val result = Result.Error(
                         Exception(
                             response.message()
-                        )
+                        ),
+                        true
                     )
                     //observableUsers.postValue(result)
                     result
                 }
             } catch (e: Exception) {
-                Result.Error(e)
+                Result.Error(e, true)
             }
         }
     }

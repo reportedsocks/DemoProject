@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.reportedsocks.demoproject.MyApp
@@ -49,13 +50,14 @@ class MainFragment : Fragment() {
         setupListAdapter()
         setupSnackbar()
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.usersList)
+        setupErrorHandling()
 
-/*        viewModel.pagedItems.observe(viewLifecycleOwner, Observer {
-            Log.d("MyLogs", "watching list from fragment: ${it.isEmpty()}; ${it.size}")
+    }
+
+    private fun setupErrorHandling() {
+        viewModel.loadingError.observe(viewLifecycleOwner, Observer {
+            viewModel.showError(it)
         })
-        viewModel.empty.observe(viewLifecycleOwner, Observer {
-            Log.d("MyLogs", "watching list from fragment(empty): ${it}")
-        })*/
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

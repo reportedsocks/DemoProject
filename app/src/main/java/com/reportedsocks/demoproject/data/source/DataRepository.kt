@@ -28,6 +28,10 @@ class DataRepository @Inject constructor(
 
     var lastLoadedItemId = INITIAL_KEY
 
+    private var _loadingError = MutableLiveData<Result.Error?>()
+    val loadingError: LiveData<Result.Error?> = _loadingError
+
+
     suspend fun loadAndSaveUsers(id: Int): List<User> {
         updateUsersFromRemoteDataSource(id)
         return getUsersFromLocalDataSource(id)
@@ -38,19 +42,16 @@ class DataRepository @Inject constructor(
         val result = remoteDataSource.getUsers(id)
         if (result is Result.Success) {
             Log.d("MyLogs", "DataRepository remote result: ${result.data}")
-
+            _loadingError.postValue(null)
             if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
                 lastLoadedItemId = result.data.last().id
             }
-
             for (user in result.data) {
                 localDataSource.saveUser(user)
             }
         } else if (result is Result.Error) {
+            _loadingError.postValue(result)
             Log.d("MyLogs", "DataRepository error loading remote data ${result.exception}")
-            //TODO handle error
-
-            // java.lang.Exception: rate limit exceeded
         }
     }
 
@@ -58,21 +59,23 @@ class DataRepository @Inject constructor(
         val result = localDataSource.getUsers(id)
 
         return if (result is Result.Success) {
+
             Log.d("MyLogs", "DataRepository local result: ${result.data}")
 
             if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
                 lastLoadedItemId = result.data.last().id
             }
 
-            _dataLoading.postValue(false)
             val filtered = filterItems(result.data)
-            _isEmpty.value = filtered.isEmpty()
+            _loadingError.postValue(null)
+            _dataLoading.postValue(false)
+            _isEmpty.postValue(filtered.isEmpty())
             filtered
         } else {
             Log.d("MyLogs", "DataRepository error loading local data")
+            _loadingError.postValue(result as? Result.Error)
             _dataLoading.postValue(false)
             emptyList()
-            //TODO handle error
         }
     }
 
