@@ -22,18 +22,21 @@ class UserBoundaryCallback(
         viewModel.viewModelScope.launch {
             Log.d(
                 "MyLogs",
-                "UserBoundaryCallback.onItemAtEndLoaded() called, lastId: ${dataRepository.lastLoadedItemId}"
+                "UserBoundaryCallback.onItemAtEndLoaded() called, lastId: ${dataRepository.lastLoadedItemId}, dataloading: ${dataRepository.dataLoading.value}"
             )
-            val result = dataRepository.loadAndSaveUsers(dataRepository.lastLoadedItemId)
-            if (result.isNotEmpty()) {
-                viewModel.refresh()
-            }
-            // This code would make app to keep loading until it has enough items of certain type,
-            // but github just doesn't provide enough of "organisation" type users so it will result
-            // in extremely long search which will be a bad UX. For now user can update page manually
-            // by swiping down for refresh, if he wants to find more items
-            /*else {
-                onItemAtEndLoaded(itemAtEnd)
+            /*if(dataRepository.dataLoading.value != true){
+                dataRepository.boundaryCallbackWasCalled = true
+                val result = dataRepository.peekUsersIfAvailable(dataRepository.lastLoadedItemId)
+                if (result.isNotEmpty()) {
+                    viewModel.refresh()
+                }
+                // This code would make app to keep loading until it has enough items of certain type,
+                // but github just doesn't provide enough of "organisation" type users so it will result
+                // in extremely long search which will be a bad UX. For now user can update page manually
+                // by swiping down for refresh, if he wants to find more items
+                *//*else {
+                    onItemAtEndLoaded(itemAtEnd)
+                }*//*
             }*/
         }
     }

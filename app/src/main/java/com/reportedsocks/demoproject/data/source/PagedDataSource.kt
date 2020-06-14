@@ -22,10 +22,9 @@ class PagedDataSource(
             "MyLogs",
             "PagedRemoteDataSource.loadInitial() with key ${params.requestedInitialKey} (always 0)"
         )
-        scope.launch {
-            val result = dataRepository.loadAndSaveUsers(INITIAL_KEY)
-            callback.onResult(result)
-        }
+
+        val result = dataRepository.loadInitialUsers(params.requestedInitialKey ?: INITIAL_KEY)
+        callback.onResult(result)
 
     }
 

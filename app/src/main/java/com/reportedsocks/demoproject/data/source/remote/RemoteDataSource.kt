@@ -54,6 +54,34 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
+    fun getUsersSync(id: Int): Result<List<User>> {
+        Log.d("MyLogs", "Trying load users from remoteDataSource")
+        return try {
+            val response = githubApi.getUsersSync(id)
+            if (response.isSuccessful && response.body() != null) {
+                val result = Result.Success(response.body()!!)
+                //observableUsers.postValue(result)
+                result
+            } else if (response.isSuccessful) {
+                val result = Result.Loading
+                //observableUsers.postValue(result)
+                result
+            } else {
+                val result = Result.Error(
+                    Exception(
+                        response.message()
+                    ),
+                    true
+                )
+                //observableUsers.postValue(result)
+                result
+            }
+        } catch (e: Exception) {
+            Result.Error(e, true)
+        }
+
+    }
+
     /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
         return withContext(dispatcher) {
             githubApi.getUsersFromId(id)

@@ -76,6 +76,7 @@ class MainViewModel @Inject constructor(
     fun setFiltering(filterType: UsersFilterType) {
         currentFiltering = filterType
         dataRepository.currentFiltering = filterType
+        dataRepository.lastLoadedItemId = INITIAL_KEY
         when (filterType) {
             UsersFilterType.ALL -> {
                 setFilter(

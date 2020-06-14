@@ -10,6 +10,9 @@ interface GithubApi {
     @GET("/users")
     suspend fun getUsers(@Query("since") lastId: Int): Response<List<User>>
 
+    @GET("/users")
+    fun getUsersSync(@Query("since") lastId: Int): Response<List<User>>
+
     /*@GET("/users")
     suspend fun getUsersFromId(@Query("since") lastId: Int): Result<List<User>>*/
 

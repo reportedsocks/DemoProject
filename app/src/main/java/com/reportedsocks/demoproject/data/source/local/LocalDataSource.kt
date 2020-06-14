@@ -36,9 +36,47 @@ class LocalDataSource @Inject constructor(
         }
     }
 
-    /*suspend fun getAllUsers(): androidx.paging.DataSource.Factory<Int, User>{
-        return usersDao.getAllUsers()
-    }*/
+    fun getUsersSync(id: Int): Result<List<User>> {
+        Log.d("MyLogs", "Trying load users from localDataSource")
+        return try {
+            Result.Success(usersDao.getUsersSync(id))
+        } catch (e: Exception) {
+            Result.Error(e, false)
+        }
+
+    }
+
+    suspend fun getAllUsers(id: Int): Result<List<User>> {
+        Log.d("MyLogs", "Trying load ALL users from localDataSource")
+        return withContext(dispatcher) {
+            try {
+                Result.Success(usersDao.getAllUsers(id))
+            } catch (e: Exception) {
+                Result.Error(e, false)
+            }
+        }
+    }
+
+    fun getAllUsersSync(id: Int): Result<List<User>> {
+        Log.d("MyLogs", "Trying load ALL users from localDataSource")
+        return try {
+            Result.Success(usersDao.getAllUsersSync(id))
+        } catch (e: Exception) {
+            Result.Error(e, false)
+        }
+
+    }
+
+    fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
+        Log.d("MyLogs", "Trying load initial users from localDataSource")
+
+        return try {
+            Result.Success(usersDao.getAllUsersWithIdSmallerSync(id))
+        } catch (e: Exception) {
+            Result.Error(e, false)
+        }
+
+    }
 
     /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
         return getUsers()
@@ -58,6 +96,12 @@ class LocalDataSource @Inject constructor(
         withContext(dispatcher) {
             usersDao.insertUser(user)
         }
+    }
+
+    fun saveUserSync(user: User) {
+
+        usersDao.insertUserSync(user)
+
     }
 
 }
