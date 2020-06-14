@@ -4,6 +4,7 @@ import android.util.Log
 import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -19,45 +20,28 @@ class LocalDataSource @Inject constructor(
 
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    /*override fun observeUsers(): LiveData<Result<List<User>>> {
-        return usersDao.observeUsers().map {
-            Result.Success(it)
-        }
-    }*/
-
     override suspend fun getUsers(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from localDataSource")
         return withContext(dispatcher) {
             try {
-                Result.Success(usersDao.getUsers(id))
+                Result.Success(usersDao.getUsers(id, PAGE_SIZE))
             } catch (e: Exception) {
                 Result.Error(e, false)
             }
         }
     }
 
-    fun getUsersSync(id: Int): Result<List<User>> {
+    override fun getUsersSync(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from localDataSource")
         return try {
-            Result.Success(usersDao.getUsersSync(id))
+            Result.Success(usersDao.getUsersSync(id, PAGE_SIZE))
         } catch (e: Exception) {
             Result.Error(e, false)
         }
 
     }
 
-    suspend fun getAllUsers(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load ALL users from localDataSource")
-        return withContext(dispatcher) {
-            try {
-                Result.Success(usersDao.getAllUsers(id))
-            } catch (e: Exception) {
-                Result.Error(e, false)
-            }
-        }
-    }
-
-    fun getAllUsersSync(id: Int): Result<List<User>> {
+    override fun getAllUsersSync(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load ALL users from localDataSource")
         return try {
             Result.Success(usersDao.getAllUsersSync(id))
@@ -67,7 +51,7 @@ class LocalDataSource @Inject constructor(
 
     }
 
-    fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
+    override fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load initial users from localDataSource")
 
         return try {
@@ -78,19 +62,6 @@ class LocalDataSource @Inject constructor(
 
     }
 
-    /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
-        return getUsers()
-    }*/
-
-    /*override suspend fun refreshUsers() {
-        // not needed
-    }*/
-
-    override suspend fun deleteUsers() {
-        withContext(dispatcher) {
-            usersDao.deleteUsers()
-        }
-    }
 
     override suspend fun saveUser(user: User) {
         withContext(dispatcher) {
@@ -98,10 +69,8 @@ class LocalDataSource @Inject constructor(
         }
     }
 
-    fun saveUserSync(user: User) {
-
+    override fun saveUserSync(user: User) {
         usersDao.insertUserSync(user)
-
     }
 
 }

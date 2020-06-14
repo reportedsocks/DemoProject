@@ -11,10 +11,9 @@ class UserBoundaryCallback(
     private val dataRepository: DataRepository,
     private val viewModel: MainViewModel
 ) : PagedList.BoundaryCallback<User>() {
-    override fun onZeroItemsLoaded() {
-        Log.d("MyLogs", "UserBoundaryCallback.onZeroItemsLoaded() called")
-        //scope.launch { dataRepository.refreshUsers(0) }
 
+    override fun onZeroItemsLoaded() {
+        // not needed unless I need to add some type of error
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: User) {
@@ -24,20 +23,13 @@ class UserBoundaryCallback(
                 "MyLogs",
                 "UserBoundaryCallback.onItemAtEndLoaded() called, lastId: ${dataRepository.lastLoadedItemId}, dataloading: ${dataRepository.dataLoading.value}"
             )
-            /*if(dataRepository.dataLoading.value != true){
+            if (dataRepository.dataLoading.value != true) {
                 dataRepository.boundaryCallbackWasCalled = true
                 val result = dataRepository.peekUsersIfAvailable(dataRepository.lastLoadedItemId)
                 if (result.isNotEmpty()) {
                     viewModel.refresh()
                 }
-                // This code would make app to keep loading until it has enough items of certain type,
-                // but github just doesn't provide enough of "organisation" type users so it will result
-                // in extremely long search which will be a bad UX. For now user can update page manually
-                // by swiping down for refresh, if he wants to find more items
-                *//*else {
-                    onItemAtEndLoaded(itemAtEnd)
-                }*//*
-            }*/
+            }
         }
     }
 }

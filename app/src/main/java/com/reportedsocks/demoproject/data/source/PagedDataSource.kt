@@ -13,14 +13,13 @@ class PagedDataSource(
 ) :
     ItemKeyedDataSource<Int, User>() {
 
-
     override fun loadInitial(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<User>
     ) {
         Log.d(
             "MyLogs",
-            "PagedRemoteDataSource.loadInitial() with key ${params.requestedInitialKey} (always 0)"
+            "PagedRemoteDataSource.loadInitial() with key ${params.requestedInitialKey}"
         )
 
         val result = dataRepository.loadInitialUsers(params.requestedInitialKey ?: INITIAL_KEY)
@@ -43,6 +42,7 @@ class PagedDataSource(
         params: LoadParams<Int>,
         callback: LoadCallback<User>
     ) {
+        // not needed
     }
 
     override fun getKey(item: User): Int {

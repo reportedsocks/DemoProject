@@ -24,15 +24,15 @@ class DataRepository @Inject constructor(
     private val _isEmpty = MutableLiveData<Boolean>()
     val isEmpty: LiveData<Boolean> = _isEmpty
 
-    var currentFiltering = UsersFilterType.ALL
-
-    var lastLoadedItemId = INITIAL_KEY
-
     private var _loadingError = MutableLiveData<Result.Error?>()
     val loadingError: LiveData<Result.Error?> = _loadingError
 
+    var lastLoadedItemId = INITIAL_KEY
+        private set
+
     var boundaryCallbackWasCalled: Boolean = false
 
+    var currentFiltering = UsersFilterType.ALL
 
     suspend fun loadAndSaveUsers(id: Int): List<User> {
         updateUsersFromRemoteDataSource(id)
@@ -81,9 +81,7 @@ class DataRepository @Inject constructor(
             is Result.Success -> {
                 Log.d("MyLogs", "DataRepository remote result: ${result.data}")
                 _loadingError.postValue(null)
-                if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
-                    lastLoadedItemId = result.data.last().id
-                }
+
                 for (user in result.data) {
                     localDataSource.saveUser(user)
                 }
@@ -105,9 +103,7 @@ class DataRepository @Inject constructor(
             is Result.Success -> {
                 Log.d("MyLogs", "DataRepository remote result: ${result.data}")
                 _loadingError.postValue(null)
-                if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
-                    lastLoadedItemId = result.data.last().id
-                }
+
                 for (user in result.data) {
                     localDataSource.saveUserSync(user)
                 }
@@ -160,7 +156,6 @@ class DataRepository @Inject constructor(
         }
 
         return if (result is Result.Success) {
-
 
             if (result.data.isNotEmpty() && result.data.last().id > lastLoadedItemId) {
                 lastLoadedItemId = result.data.last().id

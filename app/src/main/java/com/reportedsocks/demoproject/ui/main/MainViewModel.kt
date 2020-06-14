@@ -21,28 +21,14 @@ class MainViewModel @Inject constructor(
     private val dataRepository: DataRepository
 ) : ViewModel() {
 
+    val loadingError: LiveData<Result.Error?> = dataRepository.loadingError
 
-    /*private val _items: LiveData<List<User>> = _forceUpdate.switchMap { forceUpdate ->
-        Log.d("MyLogs", "vm updating values, force: $forceUpdate")
-        if (forceUpdate) {
-            _dataLoading.value = true
-            viewModelScope.launch {
-                //dataRepository.refreshUsers()
-                _dataLoading.value = false
-            }
-        }
-        dataRepository.observeUsers().switchMap { filterResults(it) }
-    }*/
-    //val items: LiveData<List<User>> = _items
-
-    val loadingError = dataRepository.loadingError
+    val dataLoading: LiveData<Boolean> = dataRepository.dataLoading
 
     var pagedItems: LiveData<PagedList<User>>
         private set
 
     private var currentFiltering = UsersFilterType.ALL
-
-    val dataLoading: LiveData<Boolean> = dataRepository.dataLoading
 
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
@@ -76,7 +62,6 @@ class MainViewModel @Inject constructor(
     fun setFiltering(filterType: UsersFilterType) {
         currentFiltering = filterType
         dataRepository.currentFiltering = filterType
-        dataRepository.lastLoadedItemId = INITIAL_KEY
         when (filterType) {
             UsersFilterType.ALL -> {
                 setFilter(
@@ -111,35 +96,6 @@ class MainViewModel @Inject constructor(
         _noItemsFilteringLabel.value = noItemsLabelString
         _noItemsIconRes.value = noItemsIconDrawable
     }
-
-    /*private fun filterResults(usersResults: Result<List<User>>): LiveData<List<User>> {
-        val result = MutableLiveData<List<User>>()
-        if (usersResults is Result.Success) {
-            viewModelScope.launch {
-                result.value = filterItems(usersResults.data, currentFiltering)
-            }
-        } else {
-            result.value = emptyList()
-            showSnackbarMessage(R.string.error_loading_items)
-        }
-        return result
-    }
-
-    private fun filterItems(users: List<User>, filterType: UsersFilterType): List<User> {
-        val usersToShow = ArrayList<User>()
-        for (user in users) {
-            when (filterType) {
-                UsersFilterType.ALL -> usersToShow.add(user)
-                UsersFilterType.USER -> if (user.type == ITEM_TYPE_USER) {
-                    usersToShow.add(user)
-                }
-                UsersFilterType.ORGANISATION -> if (user.type == ITEM_TYPE_ORGANISATION) {
-                    usersToShow.add(user)
-                }
-            }
-        }
-        return usersToShow
-    }*/
 
     fun showError(error: Result.Error?) {
         error?.let {

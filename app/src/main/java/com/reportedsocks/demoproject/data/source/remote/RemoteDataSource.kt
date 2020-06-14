@@ -19,24 +19,18 @@ class RemoteDataSource @Inject constructor(
 
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    /*private val observableUsers = MutableLiveData<Result<List<User>>>()
-
-    override fun observeUsers(): LiveData<Result<List<User>>> {
-        return observableUsers
-    }*/
 
     override suspend fun getUsers(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from remoteDataSource")
         return withContext(dispatcher) {
             try {
                 val response = githubApi.getUsers(id)
+
                 if (response.isSuccessful && response.body() != null) {
                     val result = Result.Success(response.body()!!)
-                    //observableUsers.postValue(result)
                     result
                 } else if (response.isSuccessful) {
                     val result = Result.Loading
-                    //observableUsers.postValue(result)
                     result
                 } else {
                     val result = Result.Error(
@@ -45,7 +39,6 @@ class RemoteDataSource @Inject constructor(
                         ),
                         true
                     )
-                    //observableUsers.postValue(result)
                     result
                 }
             } catch (e: Exception) {
@@ -54,17 +47,16 @@ class RemoteDataSource @Inject constructor(
         }
     }
 
-    fun getUsersSync(id: Int): Result<List<User>> {
+    override fun getUsersSync(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load users from remoteDataSource")
         return try {
-            val response = githubApi.getUsersSync(id)
+            val response = githubApi.getUsersSync(id).execute()
+
             if (response.isSuccessful && response.body() != null) {
                 val result = Result.Success(response.body()!!)
-                //observableUsers.postValue(result)
                 result
             } else if (response.isSuccessful) {
                 val result = Result.Loading
-                //observableUsers.postValue(result)
                 result
             } else {
                 val result = Result.Error(
@@ -73,7 +65,6 @@ class RemoteDataSource @Inject constructor(
                     ),
                     true
                 )
-                //observableUsers.postValue(result)
                 result
             }
         } catch (e: Exception) {
@@ -82,21 +73,22 @@ class RemoteDataSource @Inject constructor(
 
     }
 
-    /*override suspend fun getUsersFromId(id: Int): Result<List<User>> {
-        return withContext(dispatcher) {
-            githubApi.getUsersFromId(id)
-        }
-    }*/
-
-    /*override suspend fun refreshUsers() { // TODO remove this
-        observableUsers.value = getUsers()
-    }*/
-
-    override suspend fun deleteUsers() {
-        // not needed
+    override fun getAllUsersSync(id: Int): Result<List<User>> {
+        //not needed
+        return Result.Error(java.lang.Exception("Not implemented"))
     }
 
+    override fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
+        //not needed
+        return Result.Error(java.lang.Exception("Not implemented"))
+    }
+
+
     override suspend fun saveUser(user: User) {
+        //not needed
+    }
+
+    override fun saveUserSync(user: User) {
         //not needed
     }
 
