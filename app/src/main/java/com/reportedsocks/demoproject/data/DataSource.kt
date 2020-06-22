@@ -4,6 +4,8 @@ interface DataSource {
 
     suspend fun getUsers(id: Int): Result<List<User>>
 
+    suspend fun getUser(id: Int): Result<User>
+
     fun getUsersSync(id: Int): Result<List<User>>
 
     fun getAllUsersSync(id: Int): Result<List<User>>

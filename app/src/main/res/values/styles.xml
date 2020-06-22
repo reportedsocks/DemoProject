@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="titleTextColor">@color/colorAccent</item>
+    </style>
+
 </resources>

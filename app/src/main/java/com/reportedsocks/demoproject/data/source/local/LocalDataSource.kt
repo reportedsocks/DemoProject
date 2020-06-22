@@ -41,6 +41,16 @@ class LocalDataSource @Inject constructor(
 
     }
 
+    override suspend fun getUser(id: Int): Result<User> {
+        return withContext(dispatcher) {
+            try {
+                Result.Success(usersDao.getUser(id))
+            } catch (e: java.lang.Exception) {
+                Result.Error(e, false)
+            }
+        }
+    }
+
     override fun getAllUsersSync(id: Int): Result<List<User>> {
         Log.d("MyLogs", "Trying load ALL users from localDataSource")
         return try {

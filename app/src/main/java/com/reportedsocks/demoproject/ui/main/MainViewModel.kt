@@ -30,6 +30,9 @@ class MainViewModel @Inject constructor(
 
     private var currentFiltering = UsersFilterType.ALL
 
+    private val _openUserEvent = MutableLiveData<Event<Int>>()
+    val openUserEvent: LiveData<Event<Int>> = _openUserEvent
+
     private val _snackbarText = MutableLiveData<Event<Int>>()
     val snackbarText: LiveData<Event<Int>> = _snackbarText
 
@@ -126,5 +129,9 @@ class MainViewModel @Inject constructor(
 
     fun refresh() {
         pagedItems.value?.dataSource?.invalidate()
+    }
+
+    fun openUser(id: Int) {
+        _openUserEvent.value = Event(id)
     }
 }

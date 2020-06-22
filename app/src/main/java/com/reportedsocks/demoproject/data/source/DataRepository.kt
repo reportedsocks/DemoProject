@@ -34,6 +34,10 @@ class DataRepository @Inject constructor(
 
     var currentFiltering = UsersFilterType.ALL
 
+    suspend fun getUser(id: Int): Result<User> {
+        return localDataSource.getUser(id)
+    }
+
     suspend fun loadAndSaveUsers(id: Int): List<User> {
         updateUsersFromRemoteDataSource(id)
         return getUsersFromLocalDataSource(id)

@@ -92,5 +92,8 @@ class RemoteDataSource @Inject constructor(
         //not needed
     }
 
-
+    override suspend fun getUser(id: Int): Result<User> {
+        //not needed
+        return Result.Error(java.lang.Exception("Not implemented"))
+    }
 }

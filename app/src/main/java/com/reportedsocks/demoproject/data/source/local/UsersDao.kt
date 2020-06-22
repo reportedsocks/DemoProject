@@ -14,6 +14,9 @@ interface UsersDao {
     @Query("SELECT * FROM users WHERE id > :id LIMIT :pageSize")
     fun getUsersSync(id: Int, pageSize: Int): List<User>
 
+    @Query("SELECT * FROM users WHERE id == :id LIMIT 1")
+    suspend fun getUser(id: Int): User
+
     @Query("SELECT * FROM users WHERE id > :id")
     fun getAllUsersSync(id: Int): List<User>
 

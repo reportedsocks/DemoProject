@@ -5,6 +5,7 @@ import com.reportedsocks.demoproject.di.modules.ContextModule
 import com.reportedsocks.demoproject.di.modules.DatabaseModule
 import com.reportedsocks.demoproject.di.modules.RetrofitModule
 import com.reportedsocks.demoproject.di.modules.ViewModelModule
+import com.reportedsocks.demoproject.ui.details.UserDetailsFragment
 import com.reportedsocks.demoproject.ui.main.MainFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -15,6 +16,7 @@ import javax.inject.Singleton
 )
 interface ApplicationComponent {
     fun inject(fragment: MainFragment)
+    fun inject(fragment: UserDetailsFragment)
 }
 
 class MyApp : Application() {

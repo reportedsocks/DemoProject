@@ -8,6 +8,19 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.reportedsocks.demoproject.ui.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_userDetailsFragment"
+            app:destination="@id/userDetailsFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailsFragment"
+        android:name="com.reportedsocks.demoproject.ui.details.UserDetailsFragment"
+        android:label="UserDetailsFragment">
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+    </fragment>
 </navigation>

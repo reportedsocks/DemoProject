@@ -6,14 +6,15 @@ import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.databinding.FragmentMainBinding
 import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
+import com.reportedsocks.demoproject.ui.util.EventObserver
 import com.reportedsocks.demoproject.ui.util.setupRefreshLayout
 import com.reportedsocks.demoproject.ui.util.setupSnackbar
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainFragment : Fragment() {
@@ -44,11 +45,10 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        requireActivity().toolbar.title = resources.getString(R.string.app_name)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
         setupListAdapter()
         setupSnackbar()
+        setupNavigation()
         setupRefreshLayout(viewDataBinding.refreshLayout, viewDataBinding.usersList)
         setupErrorHandling()
 
@@ -100,6 +100,13 @@ class MainFragment : Fragment() {
 
     private fun setupSnackbar() {
         view?.setupSnackbar(viewLifecycleOwner, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
+    }
+
+    private fun setupNavigation() {
+        viewModel.openUserEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = MainFragmentDirections.actionMainFragmentToUserDetailsFragment(it)
+            findNavController().navigate(action)
+        })
     }
 
 }
