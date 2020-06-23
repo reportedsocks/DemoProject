@@ -14,6 +14,8 @@
     <string name="no_items_organisations">No organisations found!</string>
     <string name="error_updating_items">Couldn\'t update items!</string>
     <string name="error_loading_items">Couldn\'t load items!</string>
+    <string name="error_loading_user">Couldn\'t load data</string>
+    <string name="user_details_fragment">User Details</string>
     <string name="user_details_login_string">Username:</string>
     <string name="user_details_id_string">Id:</string>
     <string name="user_details_type_string">Type:</string>
@@ -21,4 +23,7 @@
     <string name="user_details_button_string">See on website</string>
     <string name="user_details_coming_soon">One day I will wake up feeling super great and add a list of repos here. Or maybe not:)</string>
     <string name="avatar_content_description">User avatar</string>
+    <string name="user_admin_true">True</string>
+    <string name="user_admin_false">False</string>
+    <string name="user_id_no_label">%s</string>
 </resources>

@@ -1,5 +1,7 @@
 package com.reportedsocks.demoproject.ui.details
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +9,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.databinding.FragmentUserDetailsBinding
 import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
+import com.reportedsocks.demoproject.ui.util.EventObserver
+import com.reportedsocks.demoproject.ui.util.setupSnackbar
 import javax.inject.Inject
 
 
@@ -39,5 +44,22 @@ class UserDetailsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewDataBinding.lifecycleOwner = viewLifecycleOwner
+        viewModel.start(args.userId)
+        setupBrowserRedirect()
+        setupSnackbar()
+    }
+
+    private fun setupBrowserRedirect() {
+        viewModel.browserRedirectEvent.observe(viewLifecycleOwner, EventObserver { url ->
+            val webpage: Uri = Uri.parse(url)
+            val intent = Intent(Intent.ACTION_VIEW, webpage)
+            if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                startActivity(intent)
+            }
+        })
+    }
+
+    private fun setupSnackbar() {
+        view?.setupSnackbar(viewLifecycleOwner, viewModel.snackbarText, Snackbar.LENGTH_SHORT)
     }
 }

@@ -12,13 +12,17 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_userDetailsFragment"
-            app:destination="@id/userDetailsFragment" />
+            app:destination="@id/userDetailsFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
 
     </fragment>
     <fragment
         android:id="@+id/userDetailsFragment"
         android:name="com.reportedsocks.demoproject.ui.details.UserDetailsFragment"
-        android:label="UserDetailsFragment">
+        android:label="@string/user_details_fragment">
         <argument
             android:name="userId"
             app:argType="integer" />
