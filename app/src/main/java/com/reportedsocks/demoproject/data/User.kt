@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+/** User model from github
+ */
 @Entity(tableName = "users")
 data class User(
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
@@ -16,14 +18,7 @@ data class User(
     @ColumnInfo(name = "siteAdmin") @SerializedName("site_admin") val siteAdmin: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
-        return other is User &&
-                other.id == id &&
-                other.login == login &&
-                other.avatarUrl == avatarUrl &&
-                other.htmlUrl == htmlUrl &&
-                other.reposUrl == reposUrl &&
-                other.type == type &&
-                other.siteAdmin == siteAdmin
+        return other is User && other.id == id && other.login == login && other.avatarUrl == avatarUrl && other.htmlUrl == htmlUrl && other.reposUrl == reposUrl && other.type == type && other.siteAdmin == siteAdmin
     }
 
     override fun hashCode(): Int {

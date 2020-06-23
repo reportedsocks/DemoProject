@@ -17,10 +17,6 @@ fun setItems(listView: RecyclerView, users: PagedList<User>?) {
 
 @BindingAdapter("avatar")
 fun setAvatar(imageView: ImageView, url: String?) {
-    Glide
-        .with(imageView)
-        .load(url)
-        .placeholder(R.drawable.ic_baseline_account_box_24)
-        .error(R.drawable.ic_baseline_account_box_24)
-        .into(imageView)
+    Glide.with(imageView).load(url).placeholder(R.drawable.ic_baseline_account_box_24)
+        .error(R.drawable.ic_baseline_account_box_24).into(imageView)
 }

@@ -1,6 +1,5 @@
 package com.reportedsocks.demoproject.data.source.local
 
-import android.util.Log
 import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
@@ -9,11 +8,21 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+/**
+ * Represent database and implements DataSource
+ * @see DataSource
+ */
+@Singleton
 class LocalDataSource @Inject constructor(
     private val usersDao: UsersDao
 ) : DataSource {
 
+    /**
+     * By default will use IO dispatcher to perform operations,
+     * other dispatcher can be specified in constructor
+     */
     constructor(usersDao: UsersDao, dispatcher: CoroutineDispatcher) : this(usersDao) {
         this.dispatcher = dispatcher
     }
@@ -21,7 +30,6 @@ class LocalDataSource @Inject constructor(
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override suspend fun getUsers(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load users from localDataSource")
         return withContext(dispatcher) {
             try {
                 Result.Success(usersDao.getUsers(id, PAGE_SIZE))
@@ -32,7 +40,6 @@ class LocalDataSource @Inject constructor(
     }
 
     override fun getUsersSync(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load users from localDataSource")
         return try {
             Result.Success(usersDao.getUsersSync(id, PAGE_SIZE))
         } catch (e: Exception) {
@@ -52,7 +59,6 @@ class LocalDataSource @Inject constructor(
     }
 
     override fun getAllUsersSync(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load ALL users from localDataSource")
         return try {
             Result.Success(usersDao.getAllUsersSync(id))
         } catch (e: Exception) {
@@ -61,9 +67,7 @@ class LocalDataSource @Inject constructor(
 
     }
 
-    override fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load initial users from localDataSource")
-
+    override fun getAllUsersWithIdSmallerSync(id: Int): Result<List<User>> {
         return try {
             Result.Success(usersDao.getAllUsersWithIdSmallerSync(id))
         } catch (e: Exception) {

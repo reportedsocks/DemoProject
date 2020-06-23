@@ -13,22 +13,14 @@ import javax.inject.Singleton
 @Module
 class RetrofitModule {
 
-    private val client: OkHttpClient = OkHttpClient
-        .Builder()
-        .connectTimeout(10, TimeUnit.SECONDS)
-        .readTimeout(10, TimeUnit.SECONDS)
-        .writeTimeout(10, TimeUnit.SECONDS)
-        .build()
+    private val client: OkHttpClient = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(10, TimeUnit.SECONDS).writeTimeout(10, TimeUnit.SECONDS).build()
 
     @Singleton
     @Provides
     fun getRetrofit(): Retrofit {
-        return Retrofit
-            .Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(GITHUB_API)
-            .client(client)
-            .build()
+        return Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(GITHUB_API).client(client).build()
     }
 
     @Singleton

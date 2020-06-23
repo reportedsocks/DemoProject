@@ -1,6 +1,5 @@
 package com.reportedsocks.demoproject.data.source.remote
 
-import android.util.Log
 import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
@@ -8,11 +7,21 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+/**
+ * Represents network and implements DataSource
+ * @see DataSource
+ */
+@Singleton
 class RemoteDataSource @Inject constructor(
     private val githubApi: GithubApi
 ) : DataSource {
 
+    /**
+     * By default will use IO dispatcher to perform operations,
+     * other dispatcher can be specified in constructor
+     */
     constructor(githubApi: GithubApi, dispatcher: CoroutineDispatcher) : this(githubApi) {
         this.dispatcher = dispatcher
     }
@@ -21,7 +30,6 @@ class RemoteDataSource @Inject constructor(
 
 
     override suspend fun getUsers(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load users from remoteDataSource")
         return withContext(dispatcher) {
             try {
                 val response = githubApi.getUsers(id)
@@ -33,12 +41,7 @@ class RemoteDataSource @Inject constructor(
                     val result = Result.Loading
                     result
                 } else {
-                    val result = Result.Error(
-                        Exception(
-                            response.message()
-                        ),
-                        true
-                    )
+                    val result = Result.Error(Exception(response.message()), true)
                     result
                 }
             } catch (e: Exception) {
@@ -48,7 +51,6 @@ class RemoteDataSource @Inject constructor(
     }
 
     override fun getUsersSync(id: Int): Result<List<User>> {
-        Log.d("MyLogs", "Trying load users from remoteDataSource")
         return try {
             val response = githubApi.getUsersSync(id).execute()
 
@@ -59,12 +61,7 @@ class RemoteDataSource @Inject constructor(
                 val result = Result.Loading
                 result
             } else {
-                val result = Result.Error(
-                    Exception(
-                        response.message()
-                    ),
-                    true
-                )
+                val result = Result.Error(Exception(response.message()), true)
                 result
             }
         } catch (e: Exception) {
@@ -78,7 +75,7 @@ class RemoteDataSource @Inject constructor(
         return Result.Error(java.lang.Exception("Not implemented"))
     }
 
-    override fun getAllUsersWithIdSmaller(id: Int): Result<List<User>> {
+    override fun getAllUsersWithIdSmallerSync(id: Int): Result<List<User>> {
         //not needed
         return Result.Error(java.lang.Exception("Not implemented"))
     }

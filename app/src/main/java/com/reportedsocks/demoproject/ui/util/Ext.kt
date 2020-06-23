@@ -22,9 +22,7 @@ fun View.showSnackbar(snackbarText: String, timeLength: Int) {
  * Triggers a snackbar message when the value contained by snackbarTaskMessageLiveEvent is modified.
  */
 fun View.setupSnackbar(
-    lifecycleOwner: LifecycleOwner,
-    snackbarEvent: LiveData<Event<Int>>,
-    timeLength: Int
+    lifecycleOwner: LifecycleOwner, snackbarEvent: LiveData<Event<Int>>, timeLength: Int
 ) {
 
     snackbarEvent.observe(lifecycleOwner, Observer { event ->
@@ -35,14 +33,12 @@ fun View.setupSnackbar(
 }
 
 fun Fragment.setupRefreshLayout(
-    refreshLayout: ScrollChildSwipeRefreshLayout,
-    scrollUpChild: View? = null
+    refreshLayout: ScrollChildSwipeRefreshLayout, scrollUpChild: View? = null
 ) {
-    refreshLayout.setColorSchemeColors(
-        ContextCompat.getColor(requireActivity(), R.color.colorPrimary),
+    refreshLayout.setColorSchemeColors(ContextCompat.getColor(requireActivity(),
+        R.color.colorPrimary),
         ContextCompat.getColor(requireActivity(), R.color.colorAccent),
-        ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark)
-    )
+        ContextCompat.getColor(requireActivity(), R.color.colorPrimaryDark))
     // Set the scrolling view in the custom SwipeRefreshLayout.
     scrollUpChild?.let {
         refreshLayout.scrollUpChild = it

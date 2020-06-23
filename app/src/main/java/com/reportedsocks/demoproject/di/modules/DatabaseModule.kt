@@ -14,11 +14,7 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideAppDatabase(context: Context): AppDatabase {
-        return Room
-            .databaseBuilder(
-                context, AppDatabase::class.java, "demo_app_db"
-            )
-            .build()
+        return Room.databaseBuilder(context, AppDatabase::class.java, "demo_app_db").build()
     }
 
     @Provides

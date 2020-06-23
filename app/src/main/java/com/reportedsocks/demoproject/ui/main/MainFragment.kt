@@ -32,8 +32,7 @@ class MainFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         viewDataBinding = FragmentMainBinding.inflate(inflater, container, false).apply {
@@ -80,13 +79,11 @@ class MainFragment : Fragment() {
             menuInflater.inflate(R.menu.filter_users, menu)
 
             setOnMenuItemClickListener {
-                viewModel.setFiltering(
-                    when (it.itemId) {
-                        R.id.user -> UsersFilterType.USER
-                        R.id.organisation -> UsersFilterType.ORGANISATION
-                        else -> UsersFilterType.ALL
-                    }
-                )
+                viewModel.setFiltering(when (it.itemId) {
+                    R.id.user -> UsersFilterType.USER
+                    R.id.organisation -> UsersFilterType.ORGANISATION
+                    else -> UsersFilterType.ALL
+                })
                 true
             }
             show()

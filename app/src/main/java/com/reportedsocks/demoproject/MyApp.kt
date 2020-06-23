@@ -11,16 +11,13 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(
-    modules = [RetrofitModule::class, DatabaseModule::class, ContextModule::class, ViewModelModule::class]
-)
+@Component(modules = [RetrofitModule::class, DatabaseModule::class, ContextModule::class, ViewModelModule::class])
 interface ApplicationComponent {
     fun inject(fragment: MainFragment)
     fun inject(fragment: UserDetailsFragment)
 }
 
 class MyApp : Application() {
-    var appComponent: ApplicationComponent = DaggerApplicationComponent.builder()
-        .contextModule(ContextModule(this))
-        .build()
+    var appComponent: ApplicationComponent =
+        DaggerApplicationComponent.builder().contextModule(ContextModule(this)).build()
 }

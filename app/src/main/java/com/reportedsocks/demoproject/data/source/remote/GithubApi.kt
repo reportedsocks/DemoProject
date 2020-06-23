@@ -8,9 +8,16 @@ import retrofit2.http.Query
 
 interface GithubApi {
 
+    /**
+     * Returns next page with users, page size is 30,
+     * equal to Constants.PAGE_SIZE
+     */
     @GET("/users")
     suspend fun getUsers(@Query("since") lastId: Int): Response<List<User>>
 
+    /**
+     * For synchronous call
+     */
     @GET("/users")
     fun getUsersSync(@Query("since") lastId: Int): Call<List<User>>
 

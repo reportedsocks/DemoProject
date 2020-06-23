@@ -46,15 +46,12 @@ class MainViewModel @Inject constructor(
     val noItemsIconRes: LiveData<Int> = _noItemsIconRes
 
     init {
-        val config = PagedList.Config.Builder()
-            .setPageSize(PAGE_SIZE)
-            .setEnablePlaceholders(true)
-            .build()
-
-        pagedItems = initializePagedListBuilder(config)
-            .setBoundaryCallback(UserBoundaryCallback(dataRepository, this))
-            .setInitialLoadKey(INITIAL_KEY)
-            .build()
+        val config =
+            PagedList.Config.Builder().setPageSize(PAGE_SIZE).setEnablePlaceholders(true).build()
+        // initialize PagedList/ DataSource pair
+        pagedItems = initializePagedListBuilder(config).setBoundaryCallback(UserBoundaryCallback(
+            dataRepository,
+            this)).setInitialLoadKey(INITIAL_KEY).build()
         setFiltering(currentFiltering)
     }
 
@@ -62,37 +59,37 @@ class MainViewModel @Inject constructor(
         lastPageEmpty && pagedItems.value?.isEmpty() == true
     }
 
+    /**
+     * Apply filtering to items list
+     */
     fun setFiltering(filterType: UsersFilterType) {
         currentFiltering = filterType
+        // update filtering in dataRepository
         dataRepository.currentFiltering = filterType
         when (filterType) {
             UsersFilterType.ALL -> {
-                setFilter(
-                    R.string.label_all,
+                setFilter(R.string.label_all,
                     R.string.no_items_all,
-                    R.drawable.ic_baseline_not_interested_24
-                )
+                    R.drawable.ic_baseline_not_interested_24)
             }
             UsersFilterType.USER -> {
-                setFilter(
-                    R.string.label_users,
+                setFilter(R.string.label_users,
                     R.string.no_items_users,
-                    R.drawable.ic_baseline_person_outline_24
-                )
+                    R.drawable.ic_baseline_person_outline_24)
             }
             UsersFilterType.ORGANISATION -> {
-                setFilter(
-                    R.string.label_organisations,
+                setFilter(R.string.label_organisations,
                     R.string.no_items_organisations,
-                    R.drawable.ic_baseline_people_outline_24
-                )
+                    R.drawable.ic_baseline_people_outline_24)
             }
         }
+        // trigger reload of list
         pagedItems.value?.dataSource?.invalidate()
     }
 
     private fun setFilter(
-        @StringRes filteringLabelString: Int, @StringRes noItemsLabelString: Int,
+        @StringRes filteringLabelString: Int,
+        @StringRes noItemsLabelString: Int,
         @DrawableRes noItemsIconDrawable: Int
     ) {
         _currentFilteringLabel.value = filteringLabelString
@@ -100,6 +97,9 @@ class MainViewModel @Inject constructor(
         _noItemsIconRes.value = noItemsIconDrawable
     }
 
+    /**
+     * Display error corresponding to Result.Error params
+     */
     fun showError(error: Result.Error?) {
         error?.let {
             if (error.isNetworkException) {
@@ -115,22 +115,25 @@ class MainViewModel @Inject constructor(
     }
 
     private fun initializePagedListBuilder(config: PagedList.Config): LivePagedListBuilder<Int, User> {
+        // factory for my PagedDataSource
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): PagedDataSource {
-                return PagedDataSource(
-                    viewModelScope,
-                    dataRepository
-                )
+                return PagedDataSource(viewModelScope, dataRepository)
             }
-
         }
         return LivePagedListBuilder(dataSourceFactory, config)
     }
 
+    /**
+     * Trigger list reload
+     */
     fun refresh() {
         pagedItems.value?.dataSource?.invalidate()
     }
 
+    /**
+     * Trigger navigation to UserDetailsFragment
+     */
     fun openUser(id: Int) {
         _openUserEvent.value = Event(id)
     }
