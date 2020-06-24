@@ -9,16 +9,16 @@ import androidx.paging.PagedList
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
-import com.reportedsocks.demoproject.data.source.DataRepository
-import com.reportedsocks.demoproject.data.source.PagedDataSource
-import com.reportedsocks.demoproject.data.source.UserBoundaryCallback
+import com.reportedsocks.demoproject.data.source.DefaultDataRepository
+import com.reportedsocks.demoproject.data.source.paging.PagedDataSource
+import com.reportedsocks.demoproject.data.source.paging.UserBoundaryCallback
 import com.reportedsocks.demoproject.ui.util.Event
 import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
 import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
-    private val dataRepository: DataRepository
+    private val dataRepository: DefaultDataRepository
 ) : ViewModel() {
 
     val loadingError: LiveData<Result.Error?> = dataRepository.loadingError
@@ -118,7 +118,9 @@ class MainViewModel @Inject constructor(
         // factory for my PagedDataSource
         val dataSourceFactory = object : DataSource.Factory<Int, User>() {
             override fun create(): PagedDataSource {
-                return PagedDataSource(viewModelScope, dataRepository)
+                return PagedDataSource(
+                    viewModelScope,
+                    dataRepository)
             }
         }
         return LivePagedListBuilder(dataSourceFactory, config)

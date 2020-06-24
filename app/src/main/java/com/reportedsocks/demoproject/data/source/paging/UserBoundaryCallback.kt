@@ -1,8 +1,9 @@
-package com.reportedsocks.demoproject.data.source
+package com.reportedsocks.demoproject.data.source.paging
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.data.source.DefaultDataRepository
 import com.reportedsocks.demoproject.ui.main.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
  * so it would take to much time and resource also there is a limit for API calls from github
  */
 class UserBoundaryCallback(
-    private val dataRepository: DataRepository, private val viewModel: MainViewModel
+    private val dataRepository: DefaultDataRepository, private val viewModel: MainViewModel
 ) : PagedList.BoundaryCallback<User>() {
 
     override fun onZeroItemsLoaded() {
@@ -25,11 +26,11 @@ class UserBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: User) {
         viewModel.viewModelScope.launch {
             if (dataRepository.dataLoading.value != true) {
-                // check if there are any more users in db,
+                // check if there are any more users in db which correspond to current filtering,
                 // it will prevent the following load from getting fired more than once
                 val result = dataRepository.peekUsersIfAvailable()
                 if (result.isNotEmpty()) {
-                    // trigger next call to repository to load users (remove one page limit)
+                    // trigger next call to repository to load all users (remove one page limit)
                     dataRepository.boundaryCallbackWasCalled = true
                     viewModel.refresh()
                 }

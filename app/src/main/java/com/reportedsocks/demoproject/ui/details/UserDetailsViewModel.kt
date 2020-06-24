@@ -7,12 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
-import com.reportedsocks.demoproject.data.source.DataRepository
+import com.reportedsocks.demoproject.data.source.DefaultDataRepository
 import com.reportedsocks.demoproject.ui.util.Event
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserDetailsViewModel @Inject constructor(private val dataRepository: DataRepository) :
+class UserDetailsViewModel @Inject constructor(private val dataRepository: DefaultDataRepository) :
     ViewModel() {
     private var _userItem = MutableLiveData<User>()
     val userItem: LiveData<User> = _userItem

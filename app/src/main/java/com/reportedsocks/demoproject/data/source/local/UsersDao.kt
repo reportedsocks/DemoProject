@@ -18,6 +18,9 @@ interface UsersDao {
     suspend fun getUser(id: Int): User
 
     @Query("SELECT * FROM users WHERE id > :id")
+    suspend fun getAllUsers(id: Int): List<User>
+
+    @Query("SELECT * FROM users WHERE id > :id")
     fun getAllUsersSync(id: Int): List<User>
 
     @Query("SELECT * FROM users WHERE id <= :id")

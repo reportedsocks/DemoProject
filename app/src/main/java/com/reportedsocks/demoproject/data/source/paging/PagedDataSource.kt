@@ -1,7 +1,8 @@
-package com.reportedsocks.demoproject.data.source
+package com.reportedsocks.demoproject.data.source.paging
 
 import androidx.paging.ItemKeyedDataSource
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.data.source.DefaultDataRepository
 import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -10,7 +11,7 @@ import kotlinx.coroutines.launch
  * DataSource used in paging library, extends ItemKeyedDataSource
  */
 class PagedDataSource(
-    private val scope: CoroutineScope, private val dataRepository: DataRepository
+    private val scope: CoroutineScope, private val dataRepository: DefaultDataRepository
 ) : ItemKeyedDataSource<Int, User>() {
 
     override fun loadInitial(

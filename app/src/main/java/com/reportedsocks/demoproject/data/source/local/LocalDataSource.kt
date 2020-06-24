@@ -1,8 +1,8 @@
 package com.reportedsocks.demoproject.data.source.local
 
-import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.data.source.DataSource
 import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +53,16 @@ class LocalDataSource @Inject constructor(
             try {
                 Result.Success(usersDao.getUser(id))
             } catch (e: java.lang.Exception) {
+                Result.Error(e, false)
+            }
+        }
+    }
+
+    override suspend fun getAllUsers(id: Int): Result<List<User>> {
+        return withContext(dispatcher) {
+            try {
+                Result.Success(usersDao.getAllUsers(id))
+            } catch (e: Exception) {
                 Result.Error(e, false)
             }
         }

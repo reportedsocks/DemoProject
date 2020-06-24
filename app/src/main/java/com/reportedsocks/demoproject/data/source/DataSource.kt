@@ -1,4 +1,7 @@
-package com.reportedsocks.demoproject.data
+package com.reportedsocks.demoproject.data.source
+
+import com.reportedsocks.demoproject.data.Result
+import com.reportedsocks.demoproject.data.User
 
 /**
  * DataSource classes implement this interface
@@ -18,6 +21,11 @@ interface DataSource {
      * Synchronously get next page of users starting with next user after specified id
      */
     fun getUsersSync(id: Int): Result<List<User>>
+
+    /**
+     * Get all users available
+     */
+    suspend fun getAllUsers(id: Int): Result<List<User>>
 
     /**
      * Synchronously get all users available

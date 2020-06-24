@@ -1,8 +1,8 @@
 package com.reportedsocks.demoproject.data.source.remote
 
-import com.reportedsocks.demoproject.data.DataSource
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
+import com.reportedsocks.demoproject.data.source.DataSource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -71,6 +71,11 @@ class RemoteDataSource @Inject constructor(
     }
 
     override fun getAllUsersSync(id: Int): Result<List<User>> {
+        //not needed
+        return Result.Error(java.lang.Exception("Not implemented"))
+    }
+
+    override suspend fun getAllUsers(id: Int): Result<List<User>> {
         //not needed
         return Result.Error(java.lang.Exception("Not implemented"))
     }
