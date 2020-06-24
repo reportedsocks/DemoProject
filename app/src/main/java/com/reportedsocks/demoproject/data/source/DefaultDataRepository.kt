@@ -4,13 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
-import com.reportedsocks.demoproject.data.source.local.LocalDataSource
-import com.reportedsocks.demoproject.data.source.remote.RemoteDataSource
 import com.reportedsocks.demoproject.ui.main.UsersFilterType
 import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
 import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
 import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
-import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
@@ -19,32 +16,23 @@ import javax.inject.Singleton
 @Singleton
 class DefaultDataRepository constructor(
     private val remoteDataSource: DataSource,
-    private val localDataSource: DataSource,
-    private val test: Boolean
+    private val localDataSource: DataSource
 ) : DataRepository {
 
-    @Inject
-    constructor(remoteDataSource: RemoteDataSource, localDataSource: LocalDataSource) :
-            this(remoteDataSource, localDataSource, false)
-
     private val _dataLoading = MutableLiveData<Boolean>()
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    override val dataLoading: LiveData<Boolean> = _dataLoading
 
-    // true if last loaded page is empty
     private val _isEmpty = MutableLiveData<Boolean>()
-    val isEmpty: LiveData<Boolean> = _isEmpty
+    override val isEmpty: LiveData<Boolean> = _isEmpty
 
     private var _loadingError = MutableLiveData<Result.Error?>()
-    val loadingError: LiveData<Result.Error?> = _loadingError
+    override val loadingError: LiveData<Result.Error?> = _loadingError
 
     private var lastLoadedItemId = INITIAL_KEY
 
-    /**
-     * If set to true, next call to getUsersFromLocalDataSourceSync will load all items from db
-     */
-    var boundaryCallbackWasCalled: Boolean = false
+    override var boundaryCallbackWasCalled: Boolean = false
 
-    var currentFiltering = UsersFilterType.ALL
+    override var currentFiltering = UsersFilterType.ALL
         set(value) {
             // reset lastLoadedItemId when filter is applied
             lastLoadedItemId = INITIAL_KEY

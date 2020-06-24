@@ -48,9 +48,10 @@ class DefaultDataRepositoryTest {
     fun init() {
         remoteDataSource = FakeDataSource(users)
         localDataSource = FakeDataSource(emptyList())
-        dataRepository = DefaultDataRepository((remoteDataSource as DataSource),
-            (localDataSource as DataSource),
-            true)
+        dataRepository = DefaultDataRepository(
+            (remoteDataSource as DataSource),
+            (localDataSource as DataSource)
+        )
     }
 
     @Test
