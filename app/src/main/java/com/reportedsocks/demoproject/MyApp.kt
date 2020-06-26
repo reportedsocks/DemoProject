@@ -14,7 +14,11 @@ interface ApplicationComponent {
     fun inject(fragment: UserDetailsFragment)
 }
 
-class MyApp : Application() {
-    var appComponent: ApplicationComponent =
+class MyDefaultApp : Application(), MyApp {
+    override var appComponent: ApplicationComponent =
         DaggerApplicationComponent.builder().contextModule(ContextModule(this)).build()
+}
+
+interface MyApp {
+    var appComponent: ApplicationComponent
 }

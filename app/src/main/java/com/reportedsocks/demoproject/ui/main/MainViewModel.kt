@@ -1,6 +1,5 @@
 package com.reportedsocks.demoproject.ui.main
 
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.lifecycle.*
@@ -86,7 +85,6 @@ class MainViewModel @Inject constructor(
         }
         // trigger reload of list
         pagedItems.value?.dataSource?.invalidate()
-        Log.d("MyLogs", "datasource invalidated ${pagedItems.value?.dataSource?.isInvalid}")
     }
 
     private fun setFilter(
