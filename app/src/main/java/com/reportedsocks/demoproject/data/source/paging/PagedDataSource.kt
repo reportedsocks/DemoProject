@@ -3,7 +3,7 @@ package com.reportedsocks.demoproject.data.source.paging
 import androidx.paging.ItemKeyedDataSource
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
-import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
+import com.reportedsocks.demoproject.util.INITIAL_KEY
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

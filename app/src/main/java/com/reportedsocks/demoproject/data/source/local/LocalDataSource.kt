@@ -3,7 +3,7 @@ package com.reportedsocks.demoproject.data.source.local
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataSource
-import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
+import com.reportedsocks.demoproject.util.PAGE_SIZE
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -6,9 +6,9 @@ import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.getOrAwaitValue
 import com.reportedsocks.demoproject.ui.main.UsersFilterType
-import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
+import com.reportedsocks.demoproject.util.INITIAL_KEY
+import com.reportedsocks.demoproject.util.ITEM_TYPE_ORGANISATION
+import com.reportedsocks.demoproject.util.ITEM_TYPE_USER
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual

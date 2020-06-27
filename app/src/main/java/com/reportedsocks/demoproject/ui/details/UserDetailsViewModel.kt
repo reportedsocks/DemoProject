@@ -8,7 +8,7 @@ import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
-import com.reportedsocks.demoproject.ui.util.Event
+import com.reportedsocks.demoproject.util.Event
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -7,9 +7,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
-import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
-import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
+import com.reportedsocks.demoproject.util.INITIAL_KEY
+import com.reportedsocks.demoproject.util.ITEM_TYPE_USER
+import com.reportedsocks.demoproject.util.PAGE_SIZE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking

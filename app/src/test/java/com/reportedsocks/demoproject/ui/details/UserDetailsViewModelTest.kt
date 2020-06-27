@@ -8,7 +8,7 @@ import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DefaultDataRepository
 import com.reportedsocks.demoproject.getOrAwaitValue
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
+import com.reportedsocks.demoproject.util.ITEM_TYPE_USER
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.Matchers.`is`

@@ -14,7 +14,7 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "com.reportedsocks.demoproject.MyTestRunner"
+        testInstrumentationRunner "com.reportedsocks.demoproject.util.MyTestRunner"
     }
 
     buildTypes {
@@ -91,8 +91,11 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:2.19.0'
     testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
 
+    implementation "androidx.test.espresso:espresso-idling-resource:3.2.0"
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:3.2.0"
     androidTestImplementation "junit:junit:4.12"
     androidTestImplementation "org.mockito:mockito-core:2.23.0"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:2.19.0"

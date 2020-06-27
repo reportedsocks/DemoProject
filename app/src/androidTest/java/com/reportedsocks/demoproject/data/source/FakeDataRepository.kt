@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.ui.main.UsersFilterType
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_ORGANISATION
-import com.reportedsocks.demoproject.ui.util.ITEM_TYPE_USER
+import com.reportedsocks.demoproject.util.ITEM_TYPE_ORGANISATION
+import com.reportedsocks.demoproject.util.ITEM_TYPE_USER
 
 class FakeDataRepository : DataRepository {
 

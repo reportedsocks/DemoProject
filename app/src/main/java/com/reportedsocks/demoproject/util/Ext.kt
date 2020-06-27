@@ -1,4 +1,4 @@
-package com.reportedsocks.demoproject.ui.util
+package com.reportedsocks.demoproject.util
 
 import android.view.View
 import androidx.core.content.ContextCompat

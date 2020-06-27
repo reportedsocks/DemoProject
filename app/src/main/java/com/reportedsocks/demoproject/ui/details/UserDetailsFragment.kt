@@ -13,8 +13,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.databinding.FragmentUserDetailsBinding
 import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
-import com.reportedsocks.demoproject.ui.util.EventObserver
-import com.reportedsocks.demoproject.ui.util.setupSnackbar
+import com.reportedsocks.demoproject.util.EventObserver
+import com.reportedsocks.demoproject.util.setupSnackbar
 import javax.inject.Inject
 
 

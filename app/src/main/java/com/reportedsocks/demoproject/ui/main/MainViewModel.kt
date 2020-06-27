@@ -12,9 +12,9 @@ import com.reportedsocks.demoproject.data.User
 import com.reportedsocks.demoproject.data.source.DataRepository
 import com.reportedsocks.demoproject.data.source.paging.PagedDataSource
 import com.reportedsocks.demoproject.data.source.paging.UserBoundaryCallback
-import com.reportedsocks.demoproject.ui.util.Event
-import com.reportedsocks.demoproject.ui.util.INITIAL_KEY
-import com.reportedsocks.demoproject.ui.util.PAGE_SIZE
+import com.reportedsocks.demoproject.util.Event
+import com.reportedsocks.demoproject.util.INITIAL_KEY
+import com.reportedsocks.demoproject.util.PAGE_SIZE
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(

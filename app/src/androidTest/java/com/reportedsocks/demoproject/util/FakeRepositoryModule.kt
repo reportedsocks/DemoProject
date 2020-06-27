@@ -1,4 +1,4 @@
-package com.reportedsocks.demoproject
+package com.reportedsocks.demoproject.util
 
 import com.reportedsocks.demoproject.data.source.DataRepository
 import com.reportedsocks.demoproject.data.source.FakeDataRepository

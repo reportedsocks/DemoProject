@@ -12,9 +12,9 @@ import com.reportedsocks.demoproject.MyApp
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.databinding.FragmentMainBinding
 import com.reportedsocks.demoproject.di.viewmodel.ViewModelFactory
-import com.reportedsocks.demoproject.ui.util.EventObserver
-import com.reportedsocks.demoproject.ui.util.setupRefreshLayout
-import com.reportedsocks.demoproject.ui.util.setupSnackbar
+import com.reportedsocks.demoproject.util.EventObserver
+import com.reportedsocks.demoproject.util.setupRefreshLayout
+import com.reportedsocks.demoproject.util.setupSnackbar
 import javax.inject.Inject
 
 class MainFragment : Fragment() {

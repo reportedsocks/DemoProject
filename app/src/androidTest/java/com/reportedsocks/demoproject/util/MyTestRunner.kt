@@ -1,8 +1,9 @@
-package com.reportedsocks.demoproject
+package com.reportedsocks.demoproject.util
 
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
+import com.reportedsocks.demoproject.MyAppTest
 
 /**
  * Will create MyAppTest application class with test dagger component

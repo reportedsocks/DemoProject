@@ -1,4 +1,4 @@
-package com.reportedsocks.demoproject.ui.util
+package com.reportedsocks.demoproject.util
 
 const val GITHUB_API = "https://api.github.com"
 const val ITEM_TYPE_USER = "User"

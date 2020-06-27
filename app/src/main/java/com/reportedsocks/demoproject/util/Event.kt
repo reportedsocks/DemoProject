@@ -1,4 +1,4 @@
-package com.reportedsocks.demoproject.ui.util
+package com.reportedsocks.demoproject.util
 
 import androidx.lifecycle.Observer
 

@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.main.MainFragment">
 
-        <com.reportedsocks.demoproject.ui.util.ScrollChildSwipeRefreshLayout
+        <com.reportedsocks.demoproject.util.ScrollChildSwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -80,7 +80,7 @@
             </RelativeLayout>
 
 
-        </com.reportedsocks.demoproject.ui.util.ScrollChildSwipeRefreshLayout>
+        </com.reportedsocks.demoproject.util.ScrollChildSwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

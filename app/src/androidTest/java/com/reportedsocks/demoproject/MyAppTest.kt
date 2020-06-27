@@ -5,6 +5,7 @@ import com.reportedsocks.demoproject.di.modules.ContextModule
 import com.reportedsocks.demoproject.di.modules.DatabaseModule
 import com.reportedsocks.demoproject.di.modules.RetrofitModule
 import com.reportedsocks.demoproject.di.modules.ViewModelModule
+import com.reportedsocks.demoproject.util.FakeRepositoryModule
 import dagger.Component
 import javax.inject.Singleton
 
