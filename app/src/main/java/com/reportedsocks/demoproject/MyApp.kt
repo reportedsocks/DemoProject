@@ -22,3 +22,6 @@ class MyDefaultApp : Application(), MyApp {
 interface MyApp {
     var appComponent: ApplicationComponent
 }
+
+// feature1
+// feature2
