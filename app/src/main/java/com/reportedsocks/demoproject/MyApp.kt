@@ -24,3 +24,4 @@ interface MyApp {
 }
 
 // feature1
+// feature2
