@@ -23,5 +23,5 @@ interface MyApp {
     var appComponent: ApplicationComponent
 }
 
-// feature1
-// feature2
+//feature3
+
