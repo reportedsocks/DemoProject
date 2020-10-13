@@ -63,7 +63,6 @@ class MainActivityTest {
         // Then userDetails fragment is opened
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.user_details_fragment))))
         onView(withText("1")).check(matches(isDisplayed()))
-        fail()
     }
 
     @Test
