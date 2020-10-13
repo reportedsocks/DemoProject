@@ -6,6 +6,7 @@ import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.data.Result
 import com.reportedsocks.demoproject.data.source.DefaultDataRepository
 import com.reportedsocks.demoproject.getOrAwaitValue
+import junit.framework.Assert.fail
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -54,6 +55,7 @@ class MainViewModelTest {
 
         val noItemsIconRes = viewModel.noItemsIconRes.getOrAwaitValue()
         assertThat(noItemsIconRes, `is`(R.drawable.ic_baseline_people_outline_24))
+        fail()
     }
 
     @Test
