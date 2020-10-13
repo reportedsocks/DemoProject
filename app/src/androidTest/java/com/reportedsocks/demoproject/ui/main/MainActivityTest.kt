@@ -16,6 +16,7 @@ import com.reportedsocks.demoproject.MyAppTest
 import com.reportedsocks.demoproject.R
 import com.reportedsocks.demoproject.di.modules.ContextModule
 import com.reportedsocks.demoproject.util.*
+import junit.framework.Assert.fail
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.CoreMatchers.not
 import org.junit.After
@@ -62,6 +63,7 @@ class MainActivityTest {
         // Then userDetails fragment is opened
         onView(withId(R.id.toolbar)).check(matches(hasDescendant(withText(R.string.user_details_fragment))))
         onView(withText("1")).check(matches(isDisplayed()))
+        fail()
     }
 
     @Test
