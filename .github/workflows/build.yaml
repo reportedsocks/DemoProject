@@ -10,15 +10,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Unit tests
-        run: bash ./gradlew test --stacktrace
-      - name: Run Instrumentation Tests
-        uses: reactivecircus/android-emulator-runner@v2.6.1
-        with:
-          api-level: 23
-          target: default
-          arch: x86
-          profile: Nexus 6
-          script: ./gradlew connectedCheck --stacktrace
+      - name: Android Emulator
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
 
 
