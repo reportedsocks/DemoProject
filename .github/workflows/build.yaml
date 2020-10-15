@@ -33,5 +33,5 @@ jobs:
           api-level: 28
           arch: x86_64
           profile: Nexus 5X
-          script: ./gradlew connectedCheck
+          script: ./gradlew connectedCheck --stacktrace
 
