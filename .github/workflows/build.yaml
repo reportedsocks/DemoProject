@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Unit tests
-        run: bash ./gradlew test --stacktrace
+      - name: Android Emulator
+        uses: vgaidarji/android-github-actions-emulator@v1.0.1
 
 
