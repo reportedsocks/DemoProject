@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.hamcrest.core.IsEqual
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Assert.assertThat
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -62,6 +63,7 @@ class DefaultDataRepositoryTest {
         // Then page contents are correct
         assertThat(firstPage, IsEqual(usersStart))
         assertThat(secondPage, IsEqual(usersEnd))
+        fail("Fail on purpose")
     }
 
     @Test
