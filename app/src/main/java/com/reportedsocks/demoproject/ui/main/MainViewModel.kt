@@ -16,7 +16,7 @@ import com.reportedsocks.demoproject.util.Event
 import com.reportedsocks.demoproject.util.INITIAL_KEY
 import com.reportedsocks.demoproject.util.PAGE_SIZE
 import javax.inject.Inject
-
+//test
 class MainViewModel @Inject constructor(
     private val dataRepository: DataRepository
 ) : ViewModel() {
