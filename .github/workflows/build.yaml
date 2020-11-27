@@ -3,10 +3,11 @@ on: [pull_request, push]
 jobs:
   test:
     name: Run Unit Tests
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - name: Android Emulator Runner
-  # You may pin to the exact commit or the version.
-  # uses: ReactiveCircus/android-emulator-runner@e08f702234bdc95883c7fd5c7d2867ccf1a8463b
-        uses: vgaidarji/android-github-actions-emulator@v1.0.1
+        uses: ReactiveCircus/android-emulator-runner@v2.13.0
+        with:
+          api-level: 23
+          script: ./gradlew connectedCheck
