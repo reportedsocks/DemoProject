@@ -15,9 +15,9 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.Mockito.verify
 
-@MediumTest
+/*@MediumTest
 @RunWith(AndroidJUnit4::class)
-class MainFragmentTest {
+class MainFragmentTest {*/
 
     /*@Test
     fun clickOnUser_NavigateToUserDetails() {
@@ -34,4 +34,4 @@ class MainFragmentTest {
             MainFragmentDirections.actionMainFragmentToUserDetailsFragment(1)
         )
     }*/
-}
+//}

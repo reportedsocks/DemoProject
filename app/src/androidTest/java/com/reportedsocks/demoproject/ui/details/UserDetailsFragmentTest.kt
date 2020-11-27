@@ -17,12 +17,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@MediumTest
+/*@MediumTest
 @RunWith(AndroidJUnit4::class)
 class UserDetailsFragmentTest {
 
     @get:Rule
-    val intentsTestRule = IntentsTestRule(MainActivity::class.java)
+    val intentsTestRule = IntentsTestRule(MainActivity::class.java)*/
 
     /*@Test
     fun userIsDisplayed() {
@@ -50,4 +50,4 @@ class UserDetailsFragmentTest {
         // Then intent is sent
         intended(anyIntent())
     }*/
-}
+//}
