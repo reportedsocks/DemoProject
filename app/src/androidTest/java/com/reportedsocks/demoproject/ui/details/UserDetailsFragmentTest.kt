@@ -17,14 +17,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/*@MediumTest
+@MediumTest
 @RunWith(AndroidJUnit4::class)
 class UserDetailsFragmentTest {
 
     @get:Rule
-    val intentsTestRule = IntentsTestRule(MainActivity::class.java)*/
+    val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 
-    /*@Test
+    @Test
     fun userIsDisplayed() {
         // When fragment is launched
         val bundle = Bundle().apply {
@@ -49,5 +49,5 @@ class UserDetailsFragmentTest {
         onView(withId(R.id.user_details_web_button)).perform(click())
         // Then intent is sent
         intended(anyIntent())
-    }*/
-//}
+    }
+}
