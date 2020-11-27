@@ -19,7 +19,7 @@ import org.mockito.Mockito.verify
 @RunWith(AndroidJUnit4::class)
 class MainFragmentTest {
 
-    @Test
+    /*@Test
     fun clickOnUser_NavigateToUserDetails() {
         // Given - on main fragment
         val scenario = launchFragmentInContainer<MainFragment>(Bundle(), R.style.AppTheme)
@@ -33,5 +33,5 @@ class MainFragmentTest {
         verify(navController).navigate(
             MainFragmentDirections.actionMainFragmentToUserDetailsFragment(1)
         )
-    }
+    }*/
 }
