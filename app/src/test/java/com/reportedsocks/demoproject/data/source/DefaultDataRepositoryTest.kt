@@ -63,7 +63,6 @@ class DefaultDataRepositoryTest {
         // Then page contents are correct
         assertThat(firstPage, IsEqual(usersStart))
         assertThat(secondPage, IsEqual(usersEnd))
-        fail("Fail on purpose")
     }
 
     @Test
